@@ -1,11 +1,11 @@
-# 🏢 JML Lifecycle – Business Scenario
+# JML Lifecycle – Business Scenario
 
-## 🎯 Objective
+## Objective
 Define a real-world business scenario where Joiner-Mover-Leaver (JML) lifecycle automation is required using SailPoint IdentityIQ.
 
 ---
 
-## 🏢 Business Scenario
+## Business Scenario
 
 A mid-to-large enterprise (e.g., finance or healthcare organization) has:
 - 5,000+ employees
@@ -21,48 +21,48 @@ Access management is handled manually:
 
 ---
 
-## ⚠️ Problems Identified
+## Problems Identified
 
-### 🔴 Joiner Issues (New Employees)
+### Joiner Issues (New Employees)
 - Delay in account creation (1–3 days)
 - New hires cannot access required systems on Day 1
 - Productivity loss
 
 ---
 
-### 🔄 Mover Issues (Role/Department Change)
+### Mover Issues (Role/Department Change)
 - Old access is not removed
 - New access is delayed
 - Users accumulate excessive privileges (security risk)
 
 ---
 
-### 🔴 Leaver Issues (Termination)
+### Leaver Issues (Termination)
 - Accounts remain active after employee leaves 🚨
 - High risk of unauthorized access
 - Compliance violations
 
 ---
 
-### 📉 Additional Risks
+### Additional Risks
 - No audit trail of who has access and why
 - Difficult to pass compliance audits (SOX, GDPR)
 - Increased manual workload for IT team
 
 ---
 
-## 🎯 Business Requirements
+## Business Requirements
 
 The organization wants to:
 
-### ✅ Automate Identity Lifecycle
+### Automate Identity Lifecycle
 - Automatically create user accounts when employee joins
 - Update access when employee changes role
 - Remove access immediately upon termination
 
 ---
 
-### ✅ Implement Role-Based Access Control (RBAC)
+### Implement Role-Based Access Control (RBAC)
 - Assign access based on:
   - Department
   - Job title
@@ -71,87 +71,87 @@ The organization wants to:
 
 ---
 
-### ✅ Improve Security & Compliance
+### Improve Security & Compliance
 - Ensure least privilege access
 - Maintain audit logs
 - Support certification campaigns
 
 ---
 
-### ✅ Reduce Manual Effort
+### Reduce Manual Effort
 - Minimize IT intervention
 - Automate provisioning and deprovisioning
 
 ---
 
-## 🧠 IAM Solution Overview
+## IAM Solution Overview
 
 To address these challenges, the organization implements SailPoint IdentityIQ:
 
-### 🔹 Authoritative Source
+### Authoritative Source
 - HR system becomes the **source of truth**
 
 ---
 
-### 🔹 Identity Lifecycle Automation
+### Identity Lifecycle Automation
 - IdentityIQ detects changes from HR system
 - Triggers Joiner, Mover, Leaver events automatically
 
 ---
 
-### 🔹 Role-Based Access Assignment
+### Role-Based Access Assignment
 - Access assigned using predefined roles
 - Roles mapped based on identity attributes
 
 ---
 
-### 🔹 Automated Provisioning
+### Automated Provisioning
 - Accounts created/updated/disabled automatically
 - Integrated with multiple target systems
 
 ---
 
-### 🔹 Governance & Compliance
+### Governance & Compliance
 - Access certifications enabled
 - Audit logs maintained
 - Policies enforced
 
 ---
 
-## 🔄 Expected Outcome
+## Expected Outcome
 
 After implementation:
 
-### 🚀 Operational Benefits
+### Operational Benefits
 - Day 1 access for new hires
 - Faster role change handling
 - Immediate access removal for leavers
 
 ---
 
-### 🔐 Security Benefits
+### Security Benefits
 - Reduced orphan accounts
 - Enforced least privilege
 - Improved visibility of access
 
 ---
 
-### 📊 Compliance Benefits
+### Compliance Benefits
 - Audit-ready system
 - Easy access reviews
 - Better governance
 
 ---
 
-### ⚙️ Efficiency Gains
+### Efficiency Gains
 - Reduced manual workload by IT team
 - Standardized access management process
 
 ---
 
-## 🎤 Interview Talking Points
+## Interview Talking Points
 
-👉 If asked: “Give a real-world JML scenario”
+If asked: “Give a real-world JML scenario”
 
 You can say:
 
@@ -159,7 +159,7 @@ You can say:
 
 ---
 
-## 📌 Key Takeaway
+## Key Takeaway
 
 JML lifecycle is not just a technical implementation—it is a **business-critical process** that:
 - Improves productivity
