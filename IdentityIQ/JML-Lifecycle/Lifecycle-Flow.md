@@ -133,11 +133,6 @@ Workflows handle:
 
 ---
 
-# 🚀 CLEAN FINAL VERSION (READY TO USE)
-
-```markdown
-## 🧭 JML Flow Diagram
-
 ```mermaid
 flowchart TD
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
