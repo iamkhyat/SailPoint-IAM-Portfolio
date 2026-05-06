@@ -132,7 +132,7 @@ Workflows handle:
 - Log success/failure
 
 ---
-```mermaid
+
 flowchart TD
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
 B --> C[Identity Attributes Evaluated]
