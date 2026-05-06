@@ -210,3 +210,23 @@ You can say:
 - This flow represents a real-world IdentityIQ implementation
 - Simplified for clarity but aligned with enterprise practices
 - Focused on execution logic rather than configuration details
+
+---
+**
+
+# 🚀 CLEAN FINAL VERSION (READY TO USE)
+
+```markdown
+## 🧭 JML Flow Diagram
+
+```mermaid
+flowchart TD
+A[HR System Update] --> B[Identity Created/Updated in IIQ]
+B --> C[Identity Attributes Evaluated]
+C --> D[Role Assignment]
+D --> E[Provisioning Plan Generated]
+E --> F[Provisioning Execution]
+F --> G[Accounts Created/Updated]
+G --> H[Certification & Governance]
+
+**
