@@ -133,19 +133,6 @@ Workflows handle:
 
 ---
 
-```mermaid
-
-flowchart TD
-A[HR System Update] --> B[Identity Created/Updated in IIQ]
-B --> C[Identity Attributes Evaluated]
-C --> D[Role Assignment]
-D --> E[Provisioning Plan Generated]
-E --> F[Provisioning Execution]
-F --> G[Accounts Created/Updated]
-G --> H[Certification & Governance]
-
----
-
 ## 🔄 Lifecycle Flow by Event Type
 
 ### 🟢 Joiner Flow
