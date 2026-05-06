@@ -219,6 +219,10 @@ All your diagrams will follow this **vertical flow style** (like your image):
 
 ```mermaid
 flowchart TD
-A[Step 1] --> B[Step 2]
-B --> C[Step 3]
-C --> D[Step 4]
+A[HR System Update] --> B[Identity Created/Updated in IIQ]
+B --> C[Identity Attributes Evaluated]
+C --> D[Role Assignment]
+D --> E[Provisioning Plan Generated]
+E --> F[Provisioning Execution]
+F --> G[Accounts Created/Updated]
+G --> H[Certification & Governance]
