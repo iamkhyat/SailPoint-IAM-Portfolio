@@ -211,4 +211,14 @@ You can say:
 - Simplified for clarity but aligned with enterprise practices
 - Focused on execution logic rather than configuration details
 
+---
 
+# 🔥 MASTER STYLE (Use Everywhere)
+
+All your diagrams will follow this **vertical flow style** (like your image):
+
+```mermaid
+flowchart TD
+A[Step 1] --> B[Step 2]
+B --> C[Step 3]
+C --> D[Step 4]
