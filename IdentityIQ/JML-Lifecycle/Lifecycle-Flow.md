@@ -133,6 +133,9 @@ Workflows handle:
 
 ---
 
+```markdown
+## 🧭 JML Flow Diagram
+
 ```mermaid
 flowchart TD
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
@@ -142,6 +145,7 @@ D --> E[Provisioning Plan Generated]
 E --> F[Provisioning Execution]
 F --> G[Accounts Created/Updated]
 G --> H[Certification & Governance]
+
 
 
 ## 🔄 Lifecycle Flow by Event Type
