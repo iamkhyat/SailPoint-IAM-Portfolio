@@ -146,7 +146,7 @@ E --> F[Provisioning Execution]
 F --> G[Accounts Created/Updated]
 G --> H[Certification & Governance]
 
-
+---
 
 ## 🔄 Lifecycle Flow by Event Type
 
