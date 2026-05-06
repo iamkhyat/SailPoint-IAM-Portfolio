@@ -213,13 +213,12 @@ You can say:
 
 ---
 
-# 🚀 CLEAN FINAL VERSION (READY TO USE)
+## 🚀 CLEAN FINAL VERSION (READY TO USE)
 
 ```markdown
 ## 🧭 JML Flow Diagram
 
 ```mermaid
-flowchart TD
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
 B --> C[Identity Attributes Evaluated]
 C --> D[Role Assignment]
