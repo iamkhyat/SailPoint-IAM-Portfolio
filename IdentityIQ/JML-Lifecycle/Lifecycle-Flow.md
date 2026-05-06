@@ -134,6 +134,7 @@ Workflows handle:
 ---
 
 ```mermaid
+
 flowchart TD
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
 B --> C[Identity Attributes Evaluated]
@@ -142,7 +143,6 @@ D --> E[Provisioning Plan Generated]
 E --> F[Provisioning Execution]
 F --> G[Accounts Created/Updated]
 G --> H[Certification & Governance]
-```mermaid
 
 ---
 
