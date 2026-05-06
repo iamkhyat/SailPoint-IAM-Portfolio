@@ -1,49 +1,166 @@
 # 🔌 IdentityNow – Application Onboarding
 
 ## 🎯 Objective
-Explain how applications (sources) are onboarded into IdentityNow for identity aggregation and access management.
+Provide a comprehensive understanding of how applications (Sources) are onboarded into SailPoint IdentityNow to enable identity aggregation, access management, and governance in a cloud-based IAM environment.
 
 ---
 
 ## 🏢 Business Scenario
-An organization needs to onboard SaaS applications like:
-- Salesforce
-- Workday
-- Active Directory
+An enterprise uses multiple systems:
+
+- Workday (HR system)
+- Active Directory (User directory)
+- Salesforce (CRM)
+- ServiceNow (ITSM)
+
+Each system manages:
+- User accounts
+- Access permissions
+
+👉 Challenges:
+- No centralized visibility
+- Manual provisioning
+- Compliance risks
+
+👉 Goal:
+Onboard all applications into IdentityNow for centralized governance.
 
 ---
 
 ## 🧠 IAM Design Approach
 
-- Use pre-built connectors
-- Define source schema
-- Aggregate accounts
-- Link to identity profiles
+IdentityNow uses a **Source-based onboarding model**:
+
+- Each application is onboarded as a **Source**
+- Connectors handle integration
+- Aggregation pulls accounts and entitlements
+- Identity Profiles manage identity correlation
+
+👉 Key principle:  
+**Source → Aggregation → Identity → Access Governance**
 
 ---
 
 ## 🔑 Key SailPoint Concepts Used
 
-- Sources
-- Connectors
-- Aggregation
+- Sources (Applications)
+- Connectors (SaaS / Virtual Appliance)
+- Aggregation (Full / Incremental)
 - Identity Profiles
+- Correlation Rules
+- Provisioning Policies
 
 ---
 
-## ⚙️ Step-by-Step Flow
+## ⚙️ End-to-End Onboarding Flow
 
-1. Add source  
-2. Configure connector  
-3. Define schema  
-4. Run aggregation  
-5. Link accounts to identities  
+### 🔹 Step 1: Source Creation
+- Add application as a Source
+- Select appropriate connector
+
+---
+
+### 🔹 Step 2: Connector Configuration
+- Configure authentication:
+  - OAuth / API Token / Credentials
+- Validate connectivity
+
+---
+
+### 🔹 Step 3: Schema Discovery
+- Import:
+  - Account attributes
+  - Entitlement attributes
+
+---
+
+### 🔹 Step 4: Aggregation
+- Run full aggregation
+- Import accounts and access data
+
+---
+
+### 🔹 Step 5: Identity Correlation
+- Link accounts to identities using:
+  - Email
+  - Employee ID
+
+---
+
+### 🔹 Step 6: Access Modeling
+- Create Access Profiles from entitlements
+
+---
+
+### 🔹 Step 7: Provisioning Enablement
+- Configure create/update/delete operations
+
+---
+
+## 🔄 Architecture Flow
+
+Source System  
+↓  
+Connector  
+↓  
+Aggregation  
+↓  
+IdentityNow  
+↓  
+Identity Profiles  
+↓  
+Access Profiles  
+↓  
+Provisioning  
+
+---
+
+## ⚠️ Common Issues & Troubleshooting
+
+### ❌ Connection Failure
+- Invalid credentials  
+- API misconfiguration  
+
+---
+
+### ❌ Aggregation Issues
+- Missing accounts  
+- Incorrect filters  
+
+---
+
+### ❌ Correlation Failure
+- Missing unique attributes  
+
+---
+
+### ❌ Provisioning Not Enabled
+- Policy not configured  
 
 ---
 
 ## 🎤 Interview Talking Points
 
-- Difference between IdentityIQ vs IdentityNow onboarding  
-- SaaS-first approach  
+👉 If asked: “How do you onboard applications in IdentityNow?”
+
+You can say:
+
+“Applications are onboarded as sources using connectors. After configuring authentication and schema, aggregation pulls account and entitlement data. Identity profiles correlate accounts to identities, and access is managed using access profiles and provisioning policies.”
 
 ---
+
+## 🚀 Key Takeaways
+
+- Source-based onboarding model  
+- Connector-driven integration  
+- Aggregation is foundational  
+- Identity profiles drive correlation  
+- Enables full lifecycle governance  
+
+---
+
+## 📌 Notes for Reviewers
+
+- Reflects real-world IdentityNow onboarding  
+- Focus on architecture + execution  
+- Designed for scalability and governance  
