@@ -1,131 +1,88 @@
-# 🛡️ IdentityNow – Certifications (Access Reviews)
+# 🛡️ Certifications (Architect View)
 
 ## 🎯 Objective
-Explain how IdentityNow performs access certifications to ensure users have appropriate access and meet compliance requirements.
+Explain how IdentityNow certification campaigns are designed for compliance, risk reduction, and audit readiness.
 
 ---
 
-## 🏢 Business Scenario
-Organizations must:
-- Periodically review access
-- Ensure least privilege
-- Meet compliance standards (SOX, GDPR)
+## 🏢 Real-World Business Scenario
 
-Without automation:
-- Reviews are manual
-- Errors occur
-- Audits fail
+Organization must comply with:
+- SOX
+- GDPR
 
----
-
-## 🧠 IAM Design Approach
-
-IdentityNow provides **automated access reviews**:
-
-👉 Certification Flow:
-- Define campaign  
-- Assign reviewers  
-- Review access  
-- Revoke unnecessary access  
-- Track audit  
+Issues:
+- Excess access
+- Orphan accounts
+- Audit failures
 
 ---
 
-## 🔑 Key SailPoint Concepts Used
+## 🧠 Architecture Design Approach
 
-- Certification Campaigns
-- Reviewers (Manager / Owner)
-- Access Reviews
-- Revocation
-- Audit Logs
+### 🔑 Principle
+**Continuous Access Governance**
 
 ---
 
-## ⚙️ Certification Flow
+## ⚙️ Certification Strategy
 
-Campaign Created  
-↓  
-Reviewer Assigned  
-↓  
-Access Review  
-↓  
-Approve / Revoke  
-↓  
-Remediation  
-↓  
-Audit Logging  
+### 🔹 Campaign Types
+
+| Type | Use Case |
+|------|--------|
+| Manager | User access review |
+| Application Owner | App-level review |
 
 ---
 
-## ⚙️ Step-by-Step Flow
+### 🔹 Scope Design
 
-### 🔹 Step 1: Campaign Setup
-- Define scope:
-  - Users
-  - Applications
-  - Access Profiles  
+- High-risk apps → frequent reviews  
+- Low-risk apps → periodic  
 
 ---
 
-### 🔹 Step 2: Reviewer Assignment
-- Manager-based  
-- Application owner  
+## ⚖️ Key Design Decisions
+
+### 🔹 Risk-Based Certification
+👉 WHY:
+- Reduces reviewer fatigue  
 
 ---
 
-### 🔹 Step 3: Access Review
-- Reviewers evaluate access  
+### 🔹 Reviewer Assignment Strategy
+👉 Manager vs Owner decision based on access type  
 
 ---
 
-### 🔹 Step 4: Decision
-- Approve  
-- Revoke  
+## ⚠️ Failure Scenarios
+
+### ❌ Reviewer Overload
+- Too many items  
 
 ---
 
-### 🔹 Step 5: Remediation
-- Access removed automatically  
+### ❌ Ineffective Reviews
+- Lack of context  
 
 ---
 
-## ⚠️ Common Issues & Troubleshooting
-
-### ❌ Reviewer Delays
-- Lack of reminders  
+### ❌ Remediation Delay
+- Provisioning failure  
 
 ---
 
-### ❌ Incorrect Decisions
-- Poor visibility  
+## 🎤 Architect-Level Interview Answer
 
----
-
-### ❌ Remediation Failure
-- Provisioning issue  
-
----
-
-## 🎤 Interview Talking Points
-
-👉 If asked: “How does certification work in IdentityNow?”
-
-You can say:
-
-“IdentityNow certifications allow organizations to periodically review access. Reviewers validate whether access is still needed, and revoked access is automatically removed through provisioning, ensuring compliance and security.”
+“I design certification campaigns based on risk. High-risk applications are reviewed more frequently, and reviewer assignments are optimized to reduce fatigue while ensuring accountability.”
 
 ---
 
 ## 🚀 Key Takeaways
 
-- Ensures compliance  
-- Enforces least privilege  
-- Provides audit visibility  
-- Automates governance  
+- Certifications ensure compliance  
+- Risk-based design is critical  
+- Reviewer experience impacts success  
 
 ---
-
-## 📌 Notes for Reviewers
-
-- Demonstrates governance capability  
-- Focus on audit and compliance  
