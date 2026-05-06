@@ -133,7 +133,7 @@ Workflows handle:
 
 ---
 
-flowchart TD
+```mermaid
 A[HR System Update] --> B[Identity Created/Updated in IIQ]
 B --> C[Identity Attributes Evaluated]
 C --> D[Role Assignment]
