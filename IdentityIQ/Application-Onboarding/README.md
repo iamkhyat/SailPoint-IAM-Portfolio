@@ -1,90 +1,41 @@
-# 🔌 IdentityIQ Application Onboarding
+# IdentityIQ – Application Onboarding
 
-## 🎯 Objective
-Demonstrate how enterprise applications are onboarded into SailPoint IdentityIQ to enable centralized access management, provisioning, and governance.
+![Application Onboarding Flow](../../Diagram/app-onboarding-flow.svg)
 
----
+## The problem this solves
 
-## 🏢 Business Scenario
-An organization has multiple applications (AD, ERP, SaaS, DB) where:
-- Access is managed manually
-- No centralized visibility exists
-- Compliance risks are high
+Picture a company running AD for the network, an ERP for finance, a couple of SaaS tools, and a homegrown database app nobody wants to touch. Today, access to each one gets handled differently — a help desk ticket here, a direct DB insert there, an email to the app owner somewhere else. There's no single place that can answer "what does this person actually have access to across all of it?" Onboarding an application into IdentityIQ is how you fix that, one system at a time.
 
-👉 Goal: Integrate applications into IdentityIQ for automated governance.
+## How I approach it
 
----
+Every application I onboard goes through roughly the same sequence, regardless of what it is underneath:
 
-## 🧠 IAM Design Approach
+1. Connect it using the right connector type for what it actually is (LDAP, JDBC, REST, flat file, whatever fits).
+2. Define the schema — what an account looks like, what an entitlement looks like.
+3. Aggregate the data in so IdentityIQ actually has a copy of accounts and entitlements.
+4. Correlate those accounts back to identities.
+5. Model the entitlements into roles that make sense to a human, not just to the application.
+6. Turn on provisioning and, where it makes sense, self-service access requests.
+7. Hand it off to certification campaigns so access on this app gets reviewed going forward.
 
-Application onboarding follows a structured process:
+## Concepts that come up constantly
 
-1. Connect application using connector
-2. Define schema (accounts + entitlements)
-3. Aggregate data into IdentityIQ
-4. Correlate accounts to identities
-5. Model access using roles (RBAC)
-6. Enable provisioning and access requests
-7. Govern via certifications
+Application definitions, connectors (JDBC/REST/LDAP), account and entitlement schema, aggregation, correlation, RBAC, and provisioning policies. If you only remember one thing from this section, it's that schema design and correlation logic are where 90% of onboarding problems actually originate — not the connector itself.
 
----
+## What usually goes wrong
 
-## 🔑 Key SailPoint Concepts Used
+- **Aggregation fails** — almost always a connector or credential issue, sometimes a network/firewall problem between IdentityIQ and the target.
+- **Correlation doesn't match accounts to the right identity** — usually an attribute mismatch, like the unique key not actually being unique, or being blank for a chunk of accounts.
+- **Provisioning fails after everything else looks fine** — usually a misconfigured policy or a permission the service account doesn't actually have on the target side.
 
-- Application Definition
-- Connectors (JDBC / REST / LDAP)
-- Schema (Accounts & Entitlements)
-- Aggregation
-- Correlation
-- RBAC
-- Provisioning Policies
+## What I'd say if asked to explain this in an interview
 
----
+"Onboarding an application into IdentityIQ means connecting it through the right connector, defining how its accounts and entitlements are structured, aggregating that data in, correlating it to existing identities, and then modeling the access into roles so it can be provisioned and governed going forward."
 
-## ⚙️ Step-by-Step Flow
+## Files in this folder
 
-1. Gather application requirements  
-2. Configure connector  
-3. Define account & entitlement schema  
-4. Run aggregation  
-5. Perform identity correlation  
-6. Map entitlements to roles  
-7. Configure provisioning  
-8. Enable access requests  
-
----
-
-## 📊 Architecture Flow Diagram
-
-![Application Onboarding Flow](../../Diagrams/IdentityIQ-App-Onboarding.png)
-
----
-
-## 🧾 Diagram Explanation
-
-1. Requirement Gathering  
-2. Application Configuration  
-3. Aggregation  
-4. Correlation  
-5. Entitlement Modeling  
-6. Role Creation  
-7. Provisioning Setup  
-8. Access Request Enablement  
-9. JML Integration  
-10. Certification & Governance  
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-- Aggregation failure → Connector issue  
-- Correlation issue → Attribute mismatch  
-- Provisioning failure → Policy/config error  
-
----
-
-## 🎤 Interview Talking Points
-
-“Application onboarding in IdentityIQ involves integrating a target system using connectors, defining schema, aggregating accounts and entitlements, correlating identities, and enabling provisioning and access governance.”
-
----
+- `Application-Overview.md` — why onboarding matters and the conceptual approach
+- `Schema-Design.md` — structuring account vs. entitlement data
+- `Aggregation-Process.md` — how IdentityIQ actually pulls the data in
+- `Entitlement-Mapping.md` — turning raw permissions into business-friendly roles
+- `Troubleshooting.md` — what breaks and how I'd go about fixing it
