@@ -1,220 +1,45 @@
-# ⚙️ JML Lifecycle – Provisioning Logic
+# JML Lifecycle — Provisioning Logic
 
-## 🎯 Objective
-Explain how SailPoint IdentityIQ determines, generates, and executes provisioning actions (create, modify, disable accounts) based on identity lifecycle events.
+![Provisioning Logic](../../Diagram/provisioning-logic.svg)
 
----
+## What this covers
 
-## 🏢 Business Scenario
-An organization wants to automate access across multiple systems (AD, ERP, Email, etc.).
+Once IdentityIQ knows something changed — a joiner, a mover, a leaver — it still has to figure out exactly what to do about it across every connected system. This is that decision-making layer: how an identity change turns into a concrete create/modify/disable action on an actual account.
 
-Whenever a user:
-- Joins
-- Changes role
-- Leaves
+## The scenario
 
-👉 IdentityIQ should automatically:
-- Grant correct access
-- Update access
-- Remove access
+An organization wants access across AD, ERP, email, and whatever else is connected to update automatically whenever someone joins, changes role, or leaves — without someone manually working out what needs to change where.
 
-Without manual intervention.
+## How I think about the logic
 
----
+It comes down to identity attributes (department, title, status) feeding into RBAC, which feeds into provisioning policies, which get triggered by lifecycle events. The short version: identity change leads to role change leads to provisioning action. Each step is a fairly mechanical translation of the one before it, which is exactly what makes it automatable.
 
-## 🧠 IAM Design Approach
+## Concepts
 
-Provisioning logic is driven by:
+Provisioning plans, provisioning policies, RBAC, entitlements, application connectors, approval/execution workflows, the identity cube, and the account operations themselves (create, modify, disable).
 
-- Identity attributes (department, title, status)
-- Role-Based Access Control (RBAC)
-- Provisioning policies
-- Lifecycle events (JML)
+## Step by step
 
-👉 Key idea:  
-**Identity change → Role change → Provisioning action**
+**Step 1 — Identity evaluation.** IdentityIQ looks at department, title, and status to figure out which roles should apply.
 
----
+**Step 2 — Role assignment change.** Roles get assigned on a joiner, updated on a mover, removed on a leaver. Roles are really the bridge between "who this person is" and "what they can access."
 
-## 🔑 Key SailPoint Concepts Used
+**Step 3 — Entitlement calculation.** Each role carries a set of entitlements, and IdentityIQ works out the delta — what needs to be added, what needs to be removed.
 
-- Provisioning Plan
-- Provisioning Policy
-- Role-Based Access Control (RBAC)
-- Entitlements
-- Application Connectors
-- Workflows (Approval / Execution)
-- Identity Cube
-- Account Operations (Create / Modify / Disable)
+**Step 4 — Provisioning plan generation.** This is the actual instruction set: target application, account operation (create/modify/disable), and the entitlements to add or remove.
 
----
+**Step 5 — Policy and approval check.** If the change requires approval, it routes through a workflow to a manager or app owner. If it's auto-approved by policy, it goes straight to execution.
 
-## ⚙️ Step-by-Step Flow
+**Step 6 — Provisioning execution.** The provisioning engine sends the actual request to the target system through its connector and the account gets created, modified, or disabled.
 
-### 🔹 Step 1: Identity Evaluation
+## Where this goes wrong
 
-- IdentityIQ evaluates identity attributes:
-  - Department
-  - Title
-  - Status
-- Determines applicable roles
+Leaver risk is the one I'd flag first — if the leaver event never fires, or the disable logic isn't actually configured on a given application, accounts stay active well past when they should. Beyond that, the usual suspects: connector misconfiguration, target systems that are unreachable when provisioning tries to run, and policy settings that don't match what the business actually intended.
 
----
+## Interview answer
 
-### 🔹 Step 2: Role Assignment Change
+"Provisioning in IdentityIQ is role-driven. An identity attribute change leads to a role change, which generates a provisioning plan describing exactly what needs to happen across target systems. The provisioning engine executes that plan through connectors, optionally routing through an approval workflow first."
 
-- Roles are:
-  - Assigned (Joiner)
-  - Updated (Mover)
-  - Removed (Leaver)
+## Why it matters beyond the mechanics
 
-👉 Roles act as the **bridge between identity and access**
-
----
-
-### 🔹 Step 3: Entitlement Calculation
-
-- Each role contains entitlements
-- IdentityIQ determines:
-  - What access to ADD
-  - What access to REMOVE
-
----
-
-### 🔹 Step 4: Provisioning Plan Generation
-
-IdentityIQ creates a **Provisioning Plan**:
-
-Includes:
-- Target application
-- Account operation:
-  - Create
-  - Modify
-  - Disable/Delete
-- Entitlements to add/remove
-
----
-
-### 🔹 Step 5: Policy & Approval Check
-
-- If approval required:
-  - Workflow triggered
-  - Manager/owner approves
-
-- If auto-approved:
-  - Move directly to execution
-
----
-
-### 🔹 Step 6: Provisioning Execution
-
-Provisioning engine:
-- Sends request via connector
-- Executes action on target system
-
-Examples:
-- Create AD account
-- Add user to group
-- Remove ERP access
-- Disable account
-
----
-
-### 🔹 Step 7: Result Handling
-
-- Success → Logged in system
-- Failure → Error captured
-- Retry or manual intervention triggered
-
----
-
-## 🔄 Provisioning Logic by Lifecycle Event
-
-### 🟢 Joiner (New User)
-
-- Identity created
-- Roles assigned
-- Provisioning plan:
-  - Create accounts
-  - Assign entitlements
-
-👉 Outcome: User gets Day 1 access
-
----
-
-### 🔄 Mover (Role Change)
-
-- Identity updated
-- Role recalculated
-- Provisioning plan:
-  - Remove old access
-  - Add new access
-
-👉 Outcome: Access aligned with new role
-
----
-
-### 🔴 Leaver (Termination)
-
-- Identity disabled
-- Roles removed
-- Provisioning plan:
-  - Disable or delete accounts
-  - Remove all entitlements
-
-👉 Outcome: No active access (critical for security 🚨)
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-### ❌ Provisioning Plan Not Generated
-- Role assignment missing
-- No entitlement mapping
-
----
-
-### ❌ Incorrect Access Provisioned
-- Role design issue
-- Entitlement mapping incorrect
-
----
-
-### ❌ Provisioning Failure
-- Connector issue
-- Target system unreachable
-- Invalid credentials
-
----
-
-### ❌ Access Not Removed (High Risk 🚨)
-- Leaver event not triggered
-- Disable logic not configured
-
----
-
-## 🎤 Interview Talking Points
-
-👉 If asked: “How does provisioning work in IdentityIQ?”
-
-You can say:
-
-“Provisioning in IdentityIQ is driven by role-based access. When identity attributes change, roles are assigned or removed, which triggers a provisioning plan. This plan defines what accounts and entitlements need to be created, modified, or removed. The provisioning engine then executes these actions on target systems through connectors, optionally going through approval workflows.”
-
----
-
-## 🚀 Key Takeaways
-
-- Provisioning is **role-driven**
-- Provisioning plan is the **core execution unit**
-- Connectors enable system integration
-- Automation reduces manual effort
-- Critical for security and compliance
-
----
-
-## 📌 Notes for Reviewers
-
-- This represents real-world provisioning logic in IdentityIQ
-- Focus is on decision-making and execution flow
-- Simplified for clarity but aligned with enterprise implementation
+Automated provisioning is the difference between an IAM program that's actually enforcing least privilege and one that's just documenting access after the fact. The logic described here is what makes that enforcement real instead of aspirational.
