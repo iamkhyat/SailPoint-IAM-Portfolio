@@ -1,220 +1,55 @@
-# ⚠️ JML Lifecycle – Common Issues & Troubleshooting
+# JML Lifecycle — Common Issues & Troubleshooting
 
-## 🎯 Objective
-Identify common real-world issues encountered during Joiner-Mover-Leaver (JML) lifecycle implementation in SailPoint IdentityIQ and provide practical troubleshooting approaches.
+![Common Issues Triage Map](../../Diagram/common-issues.svg)
 
----
+## Why I keep this list
 
-## 🏢 Business Scenario
-In enterprise IAM environments, even well-designed JML implementations face issues due to:
-- Data inconsistencies from HR systems
-- Configuration errors
-- Integration failures
-- Timing and synchronization problems
+Even a well-designed JML implementation runs into real problems — bad HR data, configuration drift, integration hiccups, timing issues. This is the running list I'd actually use when something's not working, organized the way I'd actually triage it rather than as an abstract taxonomy.
 
-These issues can impact:
-- User onboarding
-- Access accuracy
-- Security and compliance
+## How I approach troubleshooting here
 
----
+Figure out whether the issue is in aggregation, correlation, or provisioning. Validate the HR input data itself. Check IdentityIQ's configuration against what you'd expect. Review logs and task results. Reproduce it, then fix it. The principle underneath all of it: almost every issue traces back to data, logic, or an integration point — rarely something mysterious in the platform itself.
 
-## 🧠 IAM Design Approach
+## Concepts that come up
 
-Troubleshooting in IdentityIQ follows a structured approach:
+Aggregation tasks, the identity cube, correlation rules, provisioning plans, lifecycle events, workflows, logs (I lean on the application server logs alongside task results), and task results in the UI.
 
-1. Identify issue type (Aggregation / Correlation / Provisioning)
-2. Validate input data (HR source)
-3. Check IdentityIQ configuration
-4. Review logs and task results
-5. Reproduce and resolve issue
+## Issue 1 — Identity not created (joiner failure)
 
-👉 Key principle:
-**Every issue originates from data, logic, or integration**
+A new employee just isn't showing up in IdentityIQ. Usually the aggregation task hasn't actually run, the HR source isn't configured as authoritative, or the data's simply missing from the HR feed itself. I'd run the aggregation manually, check the HR connector config, and validate the incoming file or API response directly rather than trusting the UI summary.
 
----
+## Issue 2 — Wrong role after a role change (mover issue)
 
-## 🔑 Key SailPoint Concepts Used
+Someone keeps their old access after a role change, or doesn't get the new access they should have. Usually attribute mapping is off, the role assignment rules aren't actually dynamic, or the attribute change never got picked up. I'd check the actual attribute values, review the role rule logic, and force an identity refresh to see if it resolves on its own.
 
-- Aggregation Tasks
-- Identity Cube
-- Correlation Rules
-- Provisioning Plans
-- Lifecycle Events
-- Workflows
-- Logs (ccg.log, debug logs)
-- Task Results
+## Issue 3 — Access not revoked (leaver — this one's serious)
 
----
+A terminated employee still has active accounts somewhere. This is the issue I take most seriously, because the security exposure is real, not theoretical. Usually the status field isn't mapped correctly, the leaver lifecycle event simply isn't triggering, or the disable/delete logic was never configured for a given application. I'd validate the status mapping carefully, check the lifecycle event configuration, and confirm provisioning policies actually include a disable step.
 
-## ⚙️ Step-by-Step Troubleshooting Flow
+## Issue 4 — Provisioning failure
 
-1. Identify the issue (Joiner / Mover / Leaver)
-2. Check HR data (source of truth)
-3. Verify aggregation results
-4. Validate identity attributes
-5. Check role assignment logic
-6. Review provisioning plan
-7. Analyze logs
-8. Fix configuration and re-run process
+Access just doesn't get created or updated in the target system. Connector misconfiguration, an unreachable target, bad credentials, or an API failure are the usual suspects. I'd check connector settings, validate connectivity to the endpoint directly, review provisioning logs, and retry once the underlying issue is fixed.
 
----
+## Issue 5 — Identity correlation failure
 
-## ❌ Common Issues & Fixes
+Duplicate identities, or accounts linked to the wrong person. Usually a missing unique identifier (employee ID or email) or a correlation rule that's not tight enough. I'd tighten the correlation logic, make sure the unique attribute is consistent across the source, and clean up duplicates that already exist.
 
----
+## Issue 6 — Aggregation pulling nothing
 
-### 🔴 Issue 1: Identity Not Created (Joiner Failure)
+No accounts or entitlements come back at all. Connector misconfiguration, a query or filter scoped too narrowly, or a permissions issue on the service account. I'd validate the connector config, test the connection manually outside IdentityIQ if possible, and review the aggregation logs line by line.
 
-**Symptoms:**
-- New employee not visible in IdentityIQ
+## Issue 7 — Lifecycle processing delays
 
-**Possible Causes:**
-- Aggregation not executed
-- HR source not configured as authoritative
-- Data missing in HR feed
+Access changes aren't happening on time even though everything's technically configured. Usually an aggregation schedule that's too infrequent, or a task scheduler issue. I'd adjust the aggregation frequency and check the scheduler configuration directly.
 
-**Fix:**
-- Run aggregation task
-- Verify HR connector configuration
-- Validate incoming data file/API
+## Tools I actually reach for
 
----
+The task results page for aggregation and provisioning outcomes, the identity debug page to inspect attributes and roles directly, application logs for system-level errors, and provisioning transaction history to track exactly what got executed.
 
-### 🔄 Issue 2: Incorrect Role Assignment (Mover Issue)
+## Interview answer
 
-**Symptoms:**
-- User retains old access after role change
-- New access not assigned
+"I troubleshoot in layers — first figure out whether it's aggregation, correlation, or provisioning, then validate the source HR data, check identity attributes, and review role assignment logic before diving into provisioning plans and logs. Most issues come back to data quality more often than people expect."
 
-**Possible Causes:**
-- Attribute mapping incorrect
-- Role assignment rules not dynamic
-- Attribute change not detected
+## The honest takeaway
 
-**Fix:**
-- Verify attribute values (department, title)
-- Check role rules logic
-- Re-run identity refresh
-
----
-
-### 🔴 Issue 3: Access Not Revoked (Leaver Risk 🚨)
-
-**Symptoms:**
-- Terminated user still has active accounts
-
-**Possible Causes:**
-- Status attribute not mapped correctly
-- Leaver lifecycle event not triggered
-- Disable/delete logic missing
-
-**Fix:**
-- Validate status field mapping (e.g., "Terminated")
-- Check lifecycle event configuration
-- Ensure provisioning policies include disable action
-
----
-
-### ❌ Issue 4: Provisioning Failure
-
-**Symptoms:**
-- Access not created/updated in target system
-
-**Possible Causes:**
-- Connector configuration issue
-- Target system not reachable
-- Invalid credentials
-- API failure
-
-**Fix:**
-- Check connector settings
-- Validate endpoint connectivity
-- Review provisioning logs
-- Retry provisioning task
-
----
-
-### ❌ Issue 5: Identity Correlation Failure
-
-**Symptoms:**
-- Duplicate identities created
-- Accounts not linked to correct user
-
-**Possible Causes:**
-- Missing unique identifier (Employee ID / Email)
-- Incorrect correlation rule
-
-**Fix:**
-- Update correlation rule logic
-- Ensure unique attribute is consistent
-- Clean duplicate identities if needed
-
----
-
-### ❌ Issue 6: Aggregation Not Pulling Data
-
-**Symptoms:**
-- No accounts or entitlements imported
-
-**Possible Causes:**
-- Connector misconfiguration
-- Query/filter issue
-- Permission issues
-
-**Fix:**
-- Validate connector configuration
-- Test connection manually
-- Review aggregation logs
-
----
-
-### ❌ Issue 7: Delayed Lifecycle Processing
-
-**Symptoms:**
-- Access changes not happening on time
-
-**Possible Causes:**
-- Aggregation schedule delay
-- Task scheduling issues
-
-**Fix:**
-- Adjust aggregation frequency
-- Verify task scheduler configuration
-
----
-
-## 🔍 Debugging Tools in IdentityIQ
-
-- **Task Results Page** → Check aggregation/provisioning results  
-- **Identity Debug Page** → Inspect identity attributes and roles  
-- **Logs (ccg.log)** → Identify system errors  
-- **Provisioning Transactions** → Track provisioning execution  
-
----
-
-## 🎤 Interview Talking Points
-
-👉 If asked: “How do you troubleshoot IAM issues?”
-
-You can say:
-
-“I follow a structured approach—first identify whether the issue is in aggregation, correlation, or provisioning. Then I validate source data from HR, check identity attributes, review role assignment logic, and analyze provisioning plans and logs to find the root cause.”
-
----
-
-## 🚀 Key Takeaways
-
-- Most IAM issues are **data-related**
-- HR system is the **source of truth**
-- Correlation and attribute mapping are critical
-- Logs are essential for debugging
-- Structured troubleshooting saves time
-
----
-
-## 📌 Notes for Reviewers
-
-- This file reflects real-world IAM challenges
-- Focus is on practical debugging, not theory
-- Demonstrates production-level thinking
+Most IAM issues really are data problems, not platform bugs. HR is the source of truth, so when something looks wrong downstream, that's usually where I'd start looking before assuming IdentityIQ itself is misbehaving.
