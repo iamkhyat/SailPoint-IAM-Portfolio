@@ -1,170 +1,45 @@
-# 🧾 JML Lifecycle – Identity Attributes
+# JML Lifecycle — Identity Attributes
 
-## 🎯 Objective
-Explain how identity attributes are used in SailPoint IdentityIQ to drive lifecycle events, role assignment, and provisioning decisions.
+![Identity Attributes](../../Diagram/identity-attributes.svg)
 
----
+## Why attributes matter this much
 
-## 🏢 Business Scenario
-An enterprise receives employee data from an HR system containing user details such as:
-- Name
-- Email
-- Department
-- Job Title
-- Employment Status
+Everything in JML — role assignment, lifecycle event detection, provisioning — ultimately runs off a handful of identity attributes. If those attributes are wrong or missing, every downstream decision built on top of them is wrong too. I think of attributes as the inputs to the whole decision engine, not just metadata sitting on a profile page.
 
-These attributes are used to:
-- Create identities
-- Assign roles
-- Trigger lifecycle events (Joiner, Mover, Leaver)
+## The scenario
 
----
+HR sends over employee data with the basics — name, email, department, job title, employment status — and IdentityIQ uses that to create identities, assign roles, and fire lifecycle events.
 
-## 🧠 IAM Design Approach
+## How I approach it
 
-Identity attributes act as the **decision-making inputs** for IAM.
+The principle is simple to state and easy to get wrong in practice: attributes drive role assignment, which drives access provisioning. That means HR has to be the authoritative source for these fields, the mapping into IdentityIQ has to be correct, attributes need to actually be used for dynamic role assignment (not just sitting there unused), and the data needs to be clean and unique enough to support correlation.
 
-Key principle:
-👉 **Attributes → Role Assignment → Access Provisioning**
+## Concepts
 
-Design strategy:
-- Use HR system as authoritative source
-- Map attributes correctly into IdentityIQ
-- Use attributes for dynamic role assignment
-- Ensure data consistency and uniqueness
+The identity cube, authoritative sources, identity attributes, correlation rules, role assignment rules, lifecycle events, and attribute mapping.
 
----
+## How it plays out
 
-## 🔑 Key SailPoint Concepts Used
+**Attribute ingestion** — HR sends the data, IdentityIQ aggregates it, attributes get imported.
 
-- Identity Cube
-- Authoritative Source
-- Identity Attributes
-- Correlation Rules
-- Role Assignment Rules
-- Lifecycle Events (JML)
-- Attribute Mapping
+**Identity creation** — the identity gets built around key fields, usually employee ID as the unique identifier, plus email and name.
 
----
+**Attribute mapping** — source fields get mapped to IdentityIQ fields. A typical mapping might be `dept` to Department, `title` to Job Title, `status` to Employment Status — simple on paper, but worth double-checking against actual source data rather than assuming the field names mean what you think they mean.
 
-## ⚙️ Step-by-Step Flow
+**Identity update** — any HR change flows through and updates the identity, which then gets evaluated for lifecycle events.
 
-### 🔹 Step 1: Attribute Ingestion
+**Role assignment based on attributes** — department equals Finance gets the Finance role, title equals Manager gets the Manager role, location equals US might drive regional access — straightforward rules, but they need to be kept current as the org evolves.
 
-- HR system provides user data
-- IdentityIQ performs aggregation
-- Attributes imported into IdentityIQ
+**Lifecycle event trigger** — status active and new means joiner, an attribute change on an existing identity means mover, status terminated means leaver.
 
----
+## Attributes I see used constantly
 
-### 🔹 Step 2: Identity Creation
+Employee ID for uniqueness, email for correlation and communication, department and job title for role assignment, manager for approval routing, location for regional access decisions, and status as the actual lifecycle trigger.
 
-- Identity is created using key attributes:
-  - Employee ID (unique identifier)
-  - Email
-  - Name
+## Where this breaks
 
----
+Missing attributes from incomplete HR feeds, role assignment going wrong because the underlying attribute values are bad or the role rules haven't kept up with org changes, correlation failures from duplicate or missing unique identifiers, and lifecycle events simply not firing because the status field isn't mapped the way the rules expect.
 
-### 🔹 Step 3: Attribute Mapping
+## Interview answer
 
-- Attributes mapped from source to IdentityIQ fields
-
-Examples:
-- `dept` → Department
-- `title` → Job Title
-- `status` → Employment Status
-
----
-
-### 🔹 Step 4: Identity Update
-
-- Any change in HR data updates identity attributes
-- Triggers lifecycle evaluation
-
----
-
-### 🔹 Step 5: Role Assignment Based on Attributes
-
-- IdentityIQ evaluates attributes
-
-Examples:
-- Department = Finance → Assign Finance Role
-- Title = Manager → Assign Manager Role
-- Location = US → Assign regional access
-
----
-
-### 🔹 Step 6: Lifecycle Event Trigger
-
-- Status = Active → Joiner
-- Attribute change → Mover
-- Status = Terminated → Leaver
-
----
-
-## 📊 Common Identity Attributes (Examples)
-
-| Attribute        | Purpose                          |
-|-----------------|----------------------------------|
-| Employee ID     | Unique identity identifier       |
-| Email           | Correlation & communication      |
-| Department      | Role assignment                  |
-| Job Title       | Role refinement                  |
-| Manager         | Approval workflows               |
-| Location        | Regional access control          |
-| Status          | Lifecycle event trigger          |
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-### ❌ Missing Attributes
-- Incomplete HR data
-- Incorrect schema mapping
-
----
-
-### ❌ Incorrect Role Assignment
-- Wrong attribute values
-- Role rules not aligned with attributes
-
----
-
-### ❌ Correlation Failures
-- Duplicate or missing unique identifiers
-- Email mismatch
-
----
-
-### ❌ Lifecycle Not Triggered
-- Status attribute not mapped correctly
-- Incorrect lifecycle configuration
-
----
-
-## 🎤 Interview Talking Points
-
-👉 If asked: “What role do identity attributes play in IAM?”
-
-You can say:
-
-“Identity attributes are the foundation of IAM decision-making. In IdentityIQ, attributes like department, title, and status are used to determine role assignment and trigger lifecycle events. These roles then drive provisioning actions, ensuring users get the right access automatically.”
-
----
-
-## 🚀 Key Takeaways
-
-- Identity attributes drive **all IAM decisions**
-- Accurate mapping is critical
-- Attributes enable dynamic RBAC
-- Poor data quality leads to security risks
-- Core to lifecycle automation
-
----
-
-## 📌 Notes for Reviewers
-
-- This module highlights the importance of data in IAM
-- Focus is on decision logic, not just configuration
-- Reflects real-world enterprise implementation practices
+"Identity attributes are really the foundation of every IAM decision. Department, title, and status drive role assignment and lifecycle events, which in turn drive provisioning. Bad attribute data doesn't just cause a cosmetic issue — it produces wrong access decisions, which is a security problem, not just a data quality one."
