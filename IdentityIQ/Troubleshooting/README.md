@@ -1,94 +1,42 @@
-# 🛠️ IdentityIQ Troubleshooting
+# IdentityIQ Troubleshooting
 
-## 🎯 Objective
-Provide a structured approach to diagnosing and resolving common issues in SailPoint IdentityIQ across aggregation, provisioning, and certification processes.
+![Troubleshooting Layers](../../Diagram/iiq-troubleshooting-layers.svg)
 
----
+## What this folder is
 
-## 🏢 Business Scenario
-In real-world IAM implementations:
-- Systems are integrated with multiple applications
-- Data flows continuously between HR, IdentityIQ, and target systems
+If JML and onboarding are about building the system, this is about keeping it running. In any real implementation, data flows continuously between HR, IdentityIQ, and a dozen target systems, and failures happen — bad data, configuration drift, an integration that quietly stopped working three weeks ago and nobody noticed until a certification campaign turned up stale access.
 
-Failures can occur due to:
-- Data inconsistencies
-- Configuration errors
-- Integration issues
+## My general approach
 
-👉 Quick and structured troubleshooting is critical.
+I work through this in layers rather than guessing: figure out which area the problem is actually in (aggregation, correlation, provisioning, or certification), validate the source data, check IdentityIQ's own configuration, dig through logs and task results, and then fix and reprocess. The mental model I keep coming back to is that almost every issue is data, logic, or integration — rarely something genuinely mysterious in the platform itself.
 
----
+## Concepts that show up everywhere
 
-## 🧠 IAM Design Approach
+Aggregation tasks, the identity cube, correlation rules, provisioning plans, certification campaigns, application logs, and task results.
 
-Troubleshooting follows a layered approach:
+## The general flow I follow
 
-1. Identify problem area  
-   - Aggregation  
-   - Correlation  
-   - Provisioning  
-   - Certification  
+1. Identify what kind of issue this looks like.
+2. Check the HR or source data feeding the problem.
+3. Verify aggregation actually completed and pulled what it should have.
+4. Validate identity attributes look right.
+5. Check role assignment logic.
+6. Review the provisioning plan if access is involved.
+7. Go through logs.
+8. Fix the root cause and re-run.
 
-2. Validate source data  
-3. Check IdentityIQ configuration  
-4. Review logs and task results  
-5. Fix and reprocess  
+## The three areas this folder covers
 
-👉 Principle:  
-**Issue = Data OR Logic OR Integration**
+**Aggregation failures** — problems pulling data in from source systems in the first place.
 
----
+**Provisioning errors** — problems creating, modifying, or removing accounts once a decision's already been made.
 
-## 🔑 Key SailPoint Concepts Used
+**Certification issues** — problems in the access review and remediation cycle itself.
 
-- Aggregation Tasks  
-- Identity Cube  
-- Correlation Rules  
-- Provisioning Plans  
-- Certification Campaigns  
-- Logs (ccg.log)  
-- Task Results  
+## Common patterns across all of them
 
----
+Aggregation not pulling data, identity correlation matching the wrong (or no) identity, provisioning failing silently, revocations not actually getting enforced, and certification campaigns dragging past deadline.
 
-## ⚙️ Step-by-Step Flow
+## Interview answer
 
-1. Identify issue type  
-2. Check HR/source data  
-3. Verify aggregation results  
-4. Validate identity attributes  
-5. Check role assignment  
-6. Review provisioning plan  
-7. Analyze logs  
-8. Fix and rerun  
-
----
-
-## 📂 Troubleshooting Areas
-
-### 🔹 Aggregation Failures
-Issues related to data ingestion from source systems
-
-### 🔹 Provisioning Errors
-Issues in account creation, modification, or removal
-
-### 🔹 Certification Issues
-Issues in access reviews and remediation
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-- Aggregation not pulling data  
-- Incorrect identity correlation  
-- Provisioning failures  
-- Revocation not happening  
-- Certification delays  
-
----
-
-## 🎤 Interview Talking Points
-
-“I troubleshoot IAM issues by identifying whether the problem is in aggregation, correlation, provisioning, or certification. I validate source data, check IdentityIQ configuration, and analyze logs to determine root cause.”
-
----
+"I troubleshoot IAM issues by isolating whether the problem sits in aggregation, correlation, provisioning, or certification first. From there I validate the source data, check configuration, and work through logs to find the actual root cause rather than guessing at a fix."
