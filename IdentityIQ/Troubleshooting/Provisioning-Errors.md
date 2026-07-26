@@ -1,77 +1,36 @@
-# ⚙️ Provisioning Errors
+# Provisioning Errors
 
-## 🎯 Objective
-Explain common provisioning failures and how to resolve them.
+![Provisioning Errors](../../Diagram/provisioning-errors.svg)
 
----
+## What this covers
 
-## 🏢 Business Scenario
-Provisioning is responsible for:
-- Creating accounts  
-- Updating access  
-- Removing access  
+Provisioning is the part of IdentityIQ that actually creates, updates, or removes access — which means it's also where failures have the most direct, visible impact: a new hire who can't log in, or worse, an account that should have been disabled but wasn't.
 
-Failures impact security and user productivity.
+## My approach
 
----
+Get the provisioning logic right at the design stage, validate connectors and policies before assuming the platform's broken, and actually monitor execution rather than assuming success just because no error popped up in the UI.
 
-## 🧠 IAM Design Approach
-- Ensure correct provisioning logic
-- Validate connectors and policies
-- Monitor execution
+## Concepts
 
----
+Provisioning plan, provisioning policy, connectors, workflows.
 
-## 🔑 Key SailPoint Concepts Used
-- Provisioning Plan  
-- Provisioning Policy  
-- Connectors  
-- Workflows  
+## How it's supposed to flow
 
----
+1. A role gets assigned.
+2. A provisioning plan gets generated from it.
+3. A request goes out to the target system.
+4. The action gets executed.
 
-## ⚙️ Step-by-Step Flow
+## What goes wrong, and what I'd check
 
-1. Role assigned  
-2. Provisioning plan generated  
-3. Request sent to target system  
-4. Action executed  
+**Account not created** — usually a missing provisioning policy for the create operation on that application. Fix is configuring the create operation explicitly rather than assuming it's covered by default.
 
----
+**Access not actually assigned** — usually incorrect entitlement mapping. Fix is verifying the role-to-entitlement mapping line by line, not just spot-checking it.
 
-## ⚠️ Common Issues & Troubleshooting
+**Provisioning failing outright** — usually an API or connector issue. Fix is validating the endpoint and credentials directly against the target system, not just inside IdentityIQ's config screen.
 
-### ❌ Account Not Created
-- Missing provisioning policy  
+**Access not removed (this is the one I take seriously)** — usually leaver logic that was never configured for a given application. Fix is making sure disable or delete operations are explicitly set up, because IdentityIQ won't infer that on its own.
 
-**Fix:** Configure create operation
+## Interview talking points
 
----
-
-### ❌ Access Not Assigned
-- Entitlement mapping incorrect  
-
-**Fix:** Verify role-entitlement mapping
-
----
-
-### ❌ Provisioning Failure
-- API/connector issue  
-
-**Fix:** Validate endpoint and credentials
-
----
-
-### ❌ Access Not Removed 🚨
-- Leaver logic missing  
-
-**Fix:** Ensure disable/delete configured
-
----
-
-## 🎤 Interview Talking Points
-- Provisioning plan concept  
-- Common failures  
-- Debugging approach  
-
----
+What a provisioning plan actually is and why it matters, the most common ways provisioning fails in practice, and how I'd debug a failure methodically instead of just retrying and hoping.
