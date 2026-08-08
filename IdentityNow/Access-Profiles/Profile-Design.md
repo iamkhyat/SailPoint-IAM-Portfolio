@@ -1,38 +1,32 @@
-# Access Profiles (Architect View)
-
-![Access Profiles vs Roles](../../Diagram/idn-access-profiles.svg)
+# Access Profile Design
 
 ## The scenario
 
-Picture an enterprise with 5,000+ entitlements spread across 200+ applications. Without a deliberate model, users end up with inconsistent access depending on who provisioned them and when, and a legacy IAM approach tends to spiral into role explosion — hundreds of near-duplicate roles that nobody can actually tell apart anymore. The goal in IdentityNow is to avoid repeating that mistake with a simpler access model suited to a cloud-first environment.
+A large enterprise with thousands of entitlements spread across multiple departments needs an access model simple enough that people outside IT can actually understand and review it.
 
-## The core principle
+## Approach
 
-I think of access profiles as a simplified RBAC layer — a way to group entitlements into something business-friendly without recreating the full complexity of IdentityIQ-style role hierarchies.
+Group entitlements by job function, department, and how the application is actually used — not just by whatever the source system's native grouping happens to be.
 
-## Design strategy
+## Concepts
 
-**Entitlement grouping** — group based on job function, application usage, and least privilege, not just whatever the source system happens to call things.
+Access profiles, entitlements, least privilege.
 
-**Naming convention** — something like `APP_SALESFORCE_READ_ONLY` rather than a cryptic permission code. It looks like a small thing, but readable naming is what makes a certification campaign actually auditable instead of a guessing exercise for reviewers.
+## Steps
 
-**Assignment strategy** — manual assignment for genuine exceptions, rule-based assignment for anything that should follow a standard pattern. Leaning too heavily on manual assignment is how you end up rebuilding the same access-sprawl problem you were trying to avoid.
+1. Analyze the entitlements actually available.
+2. Group them logically based on real usage patterns.
+3. Build the profile.
+4. Validate it with the business side before rolling it out — IT's idea of a sensible grouping doesn't always match what the business actually does day to day.
 
-## Key decisions I'd defend
+## Common issues
 
-**Avoiding role explosion** — keep profiles broad enough to be manageable but still controlled, rather than creating a new profile for every minor variation.
+Too many profiles ending up created (which just re-creates role explosion under a different name), and grouping that doesn't actually reflect how access is used in practice.
 
-**Balancing granularity** — too broad and you risk granting more than someone needs; too granular and the whole model becomes too complex to maintain or certify properly. I aim for a balanced middle rather than optimizing hard for either extreme.
+## Interview talking points
 
-## Where this fails if you're not careful
+The tension between role explosion and oversimplification, and why getting business alignment matters as much as the technical grouping itself.
 
-Overlapping profiles that quietly grant the same access through two different paths, and naming that's inconsistent enough to confuse auditors during a review.
+## Takeaway
 
-## Architect-level interview answer
-
-"I design access profiles by grouping entitlements around job function and actual application usage, and I deliberately avoid role explosion by keeping the model broad-but-controlled. The balance between granularity and simplicity is really the core design tension in cloud IAM, and I'd rather lean toward simplicity since that's what keeps the model auditable over time."
-
-## Files in this folder
-
-- `Profile-Design.md` — the practical steps for building a profile
-- `Role-vs-AccessProfile.md` — how this compares to IdentityIQ's role model
+Design choices here directly affect how scalable the model is later. Keeping profiles simple, even at the cost of some granularity, tends to pay off when certification time comes around.
