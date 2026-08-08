@@ -1,59 +1,25 @@
-# ☁️ IdentityNow (SailPoint Identity Security Cloud)
+# IdentityNow (SailPoint Identity Security Cloud)
 
-## 🎯 Objective
-Provide a comprehensive overview of IdentityNow (SailPoint Identity Security Cloud) implementation covering application onboarding, access modeling, transforms, and certifications.
+## Where this fits
 
----
+Most of my hands-on years have been in IdentityIQ, so this section is partly where I've been deliberately closing a gap — getting comfortable with how SailPoint's cloud platform does things differently. The two products solve the same underlying problem but make some genuinely different architectural choices, and I think being able to speak to both honestly is more useful than pretending they're interchangeable.
 
-## 🏢 Business Scenario
-Modern enterprises use SaaS and cloud applications:
-- Workday (HR)
-- Active Directory
-- Salesforce, ServiceNow
+## The scenario IdentityNow is built for
 
-Challenges:
-- Distributed access
-- Lack of centralized control
-- Compliance requirements
+Modern organizations run on SaaS — Workday for HR, Salesforce, ServiceNow, plus AD for the on-prem pieces that haven't gone away. Access ends up distributed across all of it, with no centralized control and the same compliance pressure as ever.
 
-👉 Goal: Use IdentityNow for cloud-based IAM governance.
+## How IdentityNow approaches it
 
----
+Cloud-native by design, with sources doing the identity aggregation, access profiles standing in for the heavier role hierarchies IdentityIQ tends to use, API-driven provisioning, and governance that's meant to run continuously rather than as a periodic event.
 
-## 🧠 IAM Design Approach
+## Concepts that come up constantly
 
-IdentityNow architecture focuses on:
-- Cloud-native IAM
-- Source-based identity aggregation
-- Access Profiles (instead of roles)
-- API-driven provisioning
-- Automated governance
+Sources (the IdentityNow term for applications), identity profiles, access profiles, transforms, lifecycle states, certifications, and provisioning policies.
 
----
+## What's covered in this section
 
-## 🔑 Key SailPoint Concepts Used
+App onboarding, access profiles, transforms, and certifications — covering roughly the same ground as the IdentityIQ section, but through IdentityNow's lens.
 
-- Sources (Applications)
-- Identity Profiles
-- Access Profiles
-- Transforms
-- Lifecycle States
-- Certifications
-- Provisioning Policies
+## How I'd describe it in an interview
 
----
-
-## ⚙️ Modules Covered
-
-- App Onboarding  
-- Access Profiles  
-- Transforms  
-- Certifications  
-
----
-
-## 🎤 Interview Talking Points
-
-“IdentityNow is a cloud-based IAM platform where identities are managed through sources, access is controlled via access profiles, and governance is enforced using certifications and lifecycle states.”
-
----
+"IdentityNow is SailPoint's cloud IAM platform. Identities get managed through sources, access gets modeled through access profiles instead of traditional role hierarchies, and governance runs through certifications and lifecycle states rather than periodic manual reviews."
