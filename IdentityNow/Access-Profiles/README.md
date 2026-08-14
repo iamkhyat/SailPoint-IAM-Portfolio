@@ -1,102 +1,38 @@
-# 🎯 Access Profiles (Architect View)
+# Access Profiles (Architect View)
 
-## 🎯 Objective
-Explain how to design scalable and maintainable access models in IdentityNow using Access Profiles, including real-world trade-offs and governance implications.
+![Access Profiles vs Roles](../../Diagram/idn-access-profiles.svg)
 
----
+## The scenario
 
-## 🏢 Real-World Business Scenario
+Picture an enterprise with 5,000+ entitlements spread across 200+ applications. Without a deliberate model, users end up with inconsistent access depending on who provisioned them and when, and a legacy IAM approach tends to spiral into role explosion — hundreds of near-duplicate roles that nobody can actually tell apart anymore. The goal in IdentityNow is to avoid repeating that mistake with a simpler access model suited to a cloud-first environment.
 
-Enterprise has:
-- 5000+ entitlements
-- 200+ applications
+## The core principle
 
-Problem:
-- Users receive inconsistent access
-- Role explosion in legacy IAM
+I think of access profiles as a simplified RBAC layer — a way to group entitlements into something business-friendly without recreating the full complexity of IdentityIQ-style role hierarchies.
 
-👉 Goal:
-Simplify access model for cloud IAM
+## Design strategy
 
----
+**Entitlement grouping** — group based on job function, application usage, and least privilege, not just whatever the source system happens to call things.
 
-## 🧠 Architecture Design Approach
+**Naming convention** — something like `APP_SALESFORCE_READ_ONLY` rather than a cryptic permission code. It looks like a small thing, but readable naming is what makes a certification campaign actually auditable instead of a guessing exercise for reviewers.
 
-### 🔑 Principle
-**Access Profiles = Simplified RBAC Layer**
+**Assignment strategy** — manual assignment for genuine exceptions, rule-based assignment for anything that should follow a standard pattern. Leaning too heavily on manual assignment is how you end up rebuilding the same access-sprawl problem you were trying to avoid.
 
----
+## Key decisions I'd defend
 
-## ⚙️ Design Strategy
+**Avoiding role explosion** — keep profiles broad enough to be manageable but still controlled, rather than creating a new profile for every minor variation.
 
-### 🔹 Entitlement Grouping
+**Balancing granularity** — too broad and you risk granting more than someone needs; too granular and the whole model becomes too complex to maintain or certify properly. I aim for a balanced middle rather than optimizing hard for either extreme.
 
-Group based on:
-- Job function
-- Application usage
-- Least privilege
+## Where this fails if you're not careful
 
----
+Overlapping profiles that quietly grant the same access through two different paths, and naming that's inconsistent enough to confuse auditors during a review.
 
-### 🔹 Naming Convention
+## Architect-level interview answer
 
-Example:
-APP_SALESFORCE_READ_ONLY
+"I design access profiles by grouping entitlements around job function and actual application usage, and I deliberately avoid role explosion by keeping the model broad-but-controlled. The balance between granularity and simplicity is really the core design tension in cloud IAM, and I'd rather lean toward simplicity since that's what keeps the model auditable over time."
 
-👉 WHY:
-Improves audit readability
+## Files in this folder
 
----
-
-### 🔹 Assignment Strategy
-
-| Method | Use Case |
-|-------|--------|
-| Manual | Exceptions |
-| Rule-based | Standard roles |
-
----
-
-## ⚖️ Key Design Decisions
-
-### 🔹 Avoid Role Explosion
-👉 Decision:
-Keep profiles broad but controlled
-
----
-
-### 🔹 Granularity Balance
-
-| Too Broad | Too Granular |
-|----------|-------------|
-| Security risk | Complexity |
-
-👉 Architect choice: Balanced grouping
-
----
-
-## ⚠️ Failure Scenarios
-
-### ❌ Overlapping Profiles
-- Leads to duplicate access  
-
----
-
-### ❌ Poor Naming
-- Confuses auditors  
-
----
-
-## 🎤 Architect-Level Interview Answer
-
-“I design access profiles by grouping entitlements based on job function and application usage. I avoid role explosion by maintaining a balance between granularity and simplicity, ensuring profiles are scalable and auditable.”
-
----
-
-## 🚀 Key Takeaways
-
-- Access model defines system usability  
-- Simplicity > complexity in cloud IAM  
-- Naming standards are critical  
-
----
+- `Profile-Design.md` — the practical steps for building a profile
+- `Role-vs-AccessProfile.md` — how this compares to IdentityIQ's role model
