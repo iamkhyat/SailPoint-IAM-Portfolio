@@ -1,223 +1,44 @@
-# 🔗 IdentityNow – Connector Overview
+# IdentityNow – Connector Overview
 
-## 🎯 Objective
-Explain how SailPoint IdentityNow integrates with external applications using connectors, enabling secure data aggregation and provisioning in a cloud-based IAM environment.
+![IdentityNow Connector Architecture](../../Diagram/idn-connector-architecture.svg)
 
----
+## The scenario
 
-## 🏢 Business Scenario
-An enterprise uses multiple cloud and on-prem applications:
+An enterprise running a mix of cloud and on-prem systems — Workday for HR, AD for the directory, Salesforce, ServiceNow — each storing its own copy of user accounts and permissions. The organization needs centralized visibility and automated access control across all of it, and connectors are the mechanism that actually makes that integration possible.
 
-- Workday (HR system)
-- Active Directory (User directory)
-- Salesforce (CRM)
-- ServiceNow (ITSM)
+## Approach
 
-Each system stores:
-- User accounts
-- Access permissions
+IdentityNow treats every connected application as a "source," and connectors handle three things underneath that: authentication, aggregation (pulling data out), and provisioning (pushing changes back). The way I'd summarize it: source system, connector, IdentityNow — that's the chain, and each link matters.
 
-👉 The organization needs:
-- Centralized visibility
-- Automated access control
-- Governance across all systems
+## Concepts
 
-IdentityNow connectors enable this integration.
+Sources, connectors (SaaS-based vs. Virtual Appliance-based), aggregation, provisioning policies, identity profiles, API integration, and authentication methods like OAuth, basic auth, or token-based auth.
 
----
+## The two connector types that matter most
 
-## 🧠 IAM Design Approach
+**SaaS connectors** integrate directly through APIs with no extra infrastructure needed — think Salesforce, ServiceNow, Workday. These are the easy case.
 
-IdentityNow follows a **connector-based integration model**:
+**Virtual Appliance connectors** are needed for anything on-prem — AD, LDAP, internal databases — where the Virtual Appliance acts as a secure bridge between the cloud platform and systems that aren't internet-facing.
 
-- Each application is onboarded as a **Source**
-- Connectors handle:
-  - Authentication
-  - Data extraction (aggregation)
-  - Provisioning actions
+## How onboarding a source actually goes
 
-👉 Key principle:  
-**Source System ↔ Connector ↔ IdentityNow**
+1. Add the source in IdentityNow and pick the connector type.
+2. Configure authentication — OAuth, an API token, or username/password depending on what the connector supports. Credential storage security matters more here than people initially think, since you're often dealing with a service account that has broad access.
+3. Let IdentityNow discover the schema — account attributes like username and email, entitlement attributes like group memberships.
+4. Set up the aggregation schedule, deciding what's full vs. incremental.
+5. Configure identity correlation, usually against email or employee ID.
+6. Enable provisioning operations and set the actual policies governing create/update/delete.
 
----
+## What I've seen go wrong
 
-## 🔑 Key SailPoint Concepts Used
+**Authentication failures** — invalid credentials or expired tokens, more common than you'd expect with OAuth-based connectors since tokens silently expire. Fix is reconfiguring authentication and double-checking the API permissions actually granted.
 
-- Sources (Applications)
-- Connectors (SaaS / Virtual Appliance-based)
-- Aggregation
-- Provisioning Policies
-- Identity Profiles
-- API Integration
-- Authentication (OAuth / Basic / Token-based)
+**Aggregation failures** — API rate limits or a wrong endpoint. Fix is checking logs first, then validating connectivity directly against the API.
 
----
+**Missing attributes** — schema mapping that's off. Fix is going back through the schema configuration carefully rather than assuming the auto-discovery got everything right.
 
-## ⚙️ Types of Connectors in IdentityNow
+**Provisioning not working** — either disabled outright or misconfigured policy. Fix is confirming operations are actually enabled and the policy logic matches what you intended.
 
-### 🔹 1. SaaS Connectors (Cloud-native)
+## Interview answer
 
-- Direct integration via APIs
-- No infrastructure required
-
-Examples:
-- Salesforce
-- ServiceNow
-- Workday
-
-👉 Best for: Cloud applications
-
----
-
-### 🔹 2. Virtual Appliance (VA) Connectors
-
-- Required for on-prem systems
-- Uses IdentityNow Virtual Appliance
-
-Examples:
-- Active Directory
-- LDAP
-- Databases
-
-👉 VA acts as a secure bridge between cloud and on-prem
-
----
-
-## ⚙️ Step-by-Step Flow
-
-### 🔹 Step 1: Source Creation
-
-- Add new Source in IdentityNow
-- Select connector type
-
----
-
-### 🔹 Step 2: Authentication Configuration
-
-Depending on connector:
-- OAuth
-- API Token
-- Username/Password
-
-👉 Secure credential storage is critical
-
----
-
-### 🔹 Step 3: Schema Discovery
-
-- IdentityNow fetches:
-  - Account attributes
-  - Entitlement attributes
-
-Examples:
-- username
-- email
-- groups
-
----
-
-### 🔹 Step 4: Aggregation Setup
-
-- Configure aggregation schedule
-- Define:
-  - Full aggregation
-  - Incremental updates
-
----
-
-### 🔹 Step 5: Identity Correlation
-
-- Accounts mapped to identities using:
-  - Email
-  - Employee ID
-
----
-
-### 🔹 Step 6: Provisioning Enablement
-
-- Enable create/update/delete operations
-- Configure provisioning policies
-
----
-
-## 🔄 Data Flow Overview
-
-Source System  
-↓  
-Connector (API / VA)  
-↓  
-Aggregation  
-↓  
-IdentityNow  
-↓  
-Identity Profile  
-↓  
-Access Assignment  
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-### ❌ Authentication Failure
-- Invalid credentials
-- Expired tokens
-
-**Fix:**
-- Reconfigure authentication
-- Validate API permissions
-
----
-
-### ❌ Aggregation Failure
-- API limits exceeded
-- Incorrect endpoint
-
-**Fix:**
-- Check logs
-- Validate API connectivity
-
----
-
-### ❌ Missing Attributes
-- Schema not mapped correctly
-
-**Fix:**
-- Review schema configuration
-
----
-
-### ❌ Provisioning Not Working
-- Provisioning disabled
-- Incorrect policy
-
-**Fix:**
-- Enable operations
-- Validate policy logic
-
----
-
-## 🎤 Interview Talking Points
-
-👉 If asked: “How do connectors work in IdentityNow?”
-
-You can say:
-
-“IdentityNow uses connectors to integrate applications as sources. SaaS applications are connected via APIs, while on-prem systems use a Virtual Appliance. Connectors handle aggregation and provisioning, enabling IdentityNow to centrally manage accounts and access across systems.”
-
----
-
-## 🚀 Key Takeaways
-
-- Connectors are the **integration backbone**
-- SaaS vs VA connectors is critical distinction
-- API-driven architecture
-- Enables both aggregation and provisioning
-- Core to cloud IAM design
-
----
-
-## 📌 Notes for Reviewers
-
-- Reflects real-world IdentityNow onboarding approach
-- Focuses on architecture + execution
-- Simplified but aligned with enterprise implementation
+"IdentityNow connects applications as sources, using API-based connectors for SaaS and a Virtual Appliance for anything on-prem. Connectors handle both aggregation and provisioning, which is really what lets IdentityNow centrally manage access across a mix of cloud and legacy systems without forcing everything onto one integration pattern."
