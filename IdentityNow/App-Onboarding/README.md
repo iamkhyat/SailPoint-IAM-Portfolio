@@ -1,161 +1,47 @@
-# 🔌 IdentityNow – Application Onboarding (Architect View)
+# IdentityNow – Application Onboarding (Architect View)
 
-## 🎯 Objective
-Provide an architect-level understanding of how applications are onboarded into IdentityNow, including design decisions, integration strategies, and trade-offs in real enterprise environments.
+![IdentityNow Connector Architecture](../../Diagram/idn-connector-architecture.svg)
 
----
+## The scenario
 
-## 🏢 Real-World Business Scenario
+A large enterprise running Workday as HR, AD for authentication, Salesforce for CRM, ServiceNow for ITSM, plus the usual long tail of SaaS and legacy applications. The pain points are familiar: identity data scattered across systems that don't agree with each other, provisioning delays running two to five days, and audit findings tracing back to orphan accounts nobody caught in time. The goal is a cloud IAM onboarding model that's actually scalable and secure rather than just functional.
 
-A large enterprise operates:
+## Core principle
 
-- Workday (HR – Source of Truth)
-- Active Directory (Authentication)
-- Salesforce (CRM)
-- ServiceNow (ITSM)
-- Multiple SaaS + legacy apps
+I think of IdentityNow as fundamentally three layers stacked on top of each other: aggregation, correlation, and governance. Onboarding decisions need to be made with all three in mind, not just whichever one is easiest to configure first.
 
-Challenges:
-- Disconnected identity data
-- Manual provisioning delays (2–5 days)
-- Audit failures due to orphan accounts
+## Source classification
 
-👉 Objective:
-Design a **scalable, secure, cloud IAM onboarding model**.
+I classify every source as one of three things. An **authoritative source** like Workday drives the identity lifecycle directly. A **managed source** like AD or Salesforce supports provisioning but doesn't define identity itself. An **entitlement source** like a database or SaaS app exists purely for access governance. Keeping this distinction clear avoids conflicting identity data and keeps ownership unambiguous — without it, you get situations where two systems both think they're authoritative for the same field.
 
----
+## Connector strategy
 
-## 🧠 Architecture Design Approach
+SaaS applications get API-based connectors — fast, scalable, no extra infrastructure. On-prem systems need a Virtual Appliance acting as a secure bridge between cloud and on-prem. Genuinely custom systems sometimes need REST or web service integration built specifically for them. The trade-off is straightforward: API connectors are quick to stand up, while VA-based connectors are necessary for legacy systems but add real infrastructure overhead.
 
-### 🔑 Core Principle
-**IdentityNow = Aggregation + Correlation + Governance Layer**
+## End-to-end flow, as I'd design it
 
----
+1. Onboard the source and decide whether it's authoritative or managed.
+2. Standardize schema across sources so the same logical attribute doesn't end up named five different things.
+3. Run full aggregation for the initial load, then switch to incremental for ongoing sync.
+4. Build correlation logic around a stable primary key — usually email or employee ID — with a sensible fallback for when that key is missing or inconsistent.
+5. Map identity profiles, which drive lifecycle state and identity creation.
+6. Model access through access profiles rather than traditional roles.
+7. Enable provisioning only where it's actually needed, rather than turning it on everywhere by default.
 
-### 🔹 Source Classification Strategy
+## Decisions I'd defend
 
-| Type | Example | Design Decision |
-|------|--------|----------------|
-| Authoritative Source | Workday | Drives identity lifecycle |
-| Managed Source | AD, Salesforce | Supports provisioning |
-| Entitlement Source | DB, SaaS | Access governance only |
+A single authoritative source to avoid identity conflicts. Email as a correlation key where it's reliable, knowing the trade-off — easy to use but risky if it changes, versus employee ID which is more stable but not always available from every source. Incremental aggregation for performance and to avoid hammering SaaS APIs. And limiting provisioning scope deliberately, since not every application needs it and every enabled provisioning path is one more thing that can fail.
 
-👉 WHY:
-- Prevents conflicting identity data
-- Establishes clear ownership
+## Failure scenarios I plan around
 
----
+Duplicate identities from weak correlation logic (fixed with composite keys rather than relying on a single field), aggregation overload on large datasets (fixed by moving to incremental), API throttling against SaaS rate limits (fixed by staggering schedules instead of running everything at once), and provisioning failures from endpoint issues (handled with retry logic and alerting rather than silent failure).
 
-### 🔹 Connector Strategy
+## Architect-level answer
 
-| Scenario | Decision |
-|---------|---------|
-| SaaS apps | Use API-based connectors |
-| On-prem systems | Use Virtual Appliance |
-| Custom systems | Use REST / Web Services |
+"When I onboard an application into IdentityNow, I start by classifying it as authoritative or managed. From there I work through schema normalization, correlation logic built on stable identifiers, and aggregation with incremental updates layered on top of an initial full load. I keep provisioning scope deliberately limited and model access through access profiles for the sake of long-term scalability."
 
-👉 Trade-off:
-- API connectors = fast, scalable  
-- VA = required for legacy, adds infra overhead  
+## Files in this folder
 
----
-
-## ⚙️ End-to-End Flow (Architect View)
-
-1. **Source Onboarding**
-   - Define source type (authoritative vs managed)
-
-2. **Schema Strategy**
-   - Standardize attributes across sources
-   - Avoid attribute duplication
-
-3. **Aggregation Design**
-   - Full aggregation during onboarding
-   - Incremental for daily sync
-
-4. **Correlation Logic**
-   - Primary key: email or employeeId
-   - Fallback logic required
-
-5. **Identity Profile Mapping**
-   - Drives lifecycle state
-   - Controls identity creation
-
-6. **Access Modeling**
-   - Use Access Profiles (not roles)
-
-7. **Provisioning Enablement**
-   - Enable only where required
-   - Avoid over-provisioning
-
----
-
-## ⚖️ Key Design Decisions
-
-### 🔹 Decision 1: Single Authoritative Source
-👉 WHY:
-Avoid identity conflicts
-
----
-
-### 🔹 Decision 2: Email as Correlation Key
-👉 Trade-off:
-- Easy → but risky if email changes  
-- Employee ID → more stable but not always available  
-
----
-
-### 🔹 Decision 3: Incremental Aggregation
-👉 WHY:
-- Performance optimization  
-- Reduces API load  
-
----
-
-### 🔹 Decision 4: Limit Provisioning Scope
-👉 WHY:
-- Not all apps need provisioning  
-- Reduces failure points  
-
----
-
-## ⚠️ Failure Scenarios & Mitigation
-
-### ❌ Duplicate Identities
-- Cause: Poor correlation logic  
-- Fix: Use composite keys  
-
----
-
-### ❌ Aggregation Overload
-- Cause: Large datasets  
-- Fix: Incremental aggregation  
-
----
-
-### ❌ API Throttling
-- Cause: SaaS rate limits  
-- Fix: Stagger schedules  
-
----
-
-### ❌ Provisioning Failures
-- Cause: Endpoint issues  
-- Fix: Retry + alerting  
-
----
-
-## 🎤 Architect-Level Interview Answer
-
-“If I onboard an application in IdentityNow, I first classify it as authoritative or managed. I design schema normalization, define correlation logic using stable identifiers, and implement aggregation with incremental updates. I minimize provisioning scope and ensure access is modeled via access profiles for scalability.”
-
----
-
-## 🚀 Key Takeaways
-
-- Architecture decisions impact scalability  
-- Source classification is critical  
-- Correlation logic is high-risk area  
-- Over-provisioning must be avoided  
-
----
+- `Connector-Overview.md` — connector types and how they actually integrate
+- `Aggregation-Flow.md` — how data moves from source into IdentityNow
+- `Access-Model.md` — access profiles and entitlements in practice
