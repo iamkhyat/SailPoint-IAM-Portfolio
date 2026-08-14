@@ -1,122 +1,45 @@
-# 🔄 IdentityNow – Aggregation Flow
+# IdentityNow – Aggregation Flow
 
-## 🎯 Objective
-Explain how IdentityNow aggregates accounts and entitlements from connected sources and links them to identities for access governance.
+![IdentityNow Connector Architecture](../../Diagram/idn-connector-architecture.svg)
 
----
+## The scenario
 
-## 🏢 Business Scenario
-An enterprise uses multiple systems (Workday, AD, Salesforce) where:
-- User accounts are created independently
-- Access is distributed
+An enterprise running Workday, AD, and Salesforce independently — each one creating and managing user accounts on its own terms. IdentityNow needs to pull all of that together into a single, current picture of who has what.
 
-👉 IdentityNow must:
-- Collect all account data
-- Maintain a unified identity view
+## Approach
 
----
+Aggregation jobs pull data from each configured source. The pattern is always the same regardless of source type: source data flows in, gets aggregated, gets correlated to an identity, and only then becomes something governance can actually act on.
 
-## 🧠 IAM Design Approach
+## Concepts
 
-IdentityNow uses **aggregation jobs** to pull data from sources:
+Sources, full vs. incremental aggregation, identity profiles, correlation rules, account attributes, entitlements.
 
-👉 Key idea:  
-**Source Data → Aggregation → Identity Correlation → Governance**
+## Step by step
 
----
+**Source configuration** — the source (AD, Workday, whatever) gets configured and connector authentication gets established.
 
-## 🔑 Key SailPoint Concepts Used
+**Aggregation trigger** — runs scheduled or manually, full or incremental depending on the situation.
 
-- Sources
-- Aggregation (Full / Incremental)
-- Identity Profiles
-- Correlation Rules
-- Account Attributes
-- Entitlements
+**Data retrieval** — the connector fetches accounts, attributes (email, username), and entitlements (groups, roles).
 
----
+**Data storage** — the data lands in IdentityNow, where accounts can exist on their own before they're correlated to an identity.
 
-## ⚙️ Step-by-Step Flow
+**Identity correlation** — accounts get matched to identities using email or employee ID.
 
-### 🔹 Step 1: Source Configuration
-- Source (e.g., AD, Workday) is configured
-- Connector authentication established
+**Identity profile assignment** — identity profiles take over from there, defining attribute mapping and lifecycle state.
 
----
+## Full vs. incremental
 
-### 🔹 Step 2: Aggregation Trigger
-- Scheduled or manual aggregation
-- Full or incremental
+Full aggregation pulls everything and is mainly used during initial onboarding. Incremental aggregation pulls only what's changed and is what you'd actually run daily once the source is established — running full aggregation constantly on a large source is a fast way to hit API rate limits or just slow everything down for no real benefit.
 
----
+## What goes wrong
 
-### 🔹 Step 3: Data Retrieval
-Connector fetches:
-- Accounts
-- Attributes (email, username)
-- Entitlements (groups, roles)
+**Missing accounts** — aggregation didn't actually run, or a filter is scoped too narrowly and silently excluding accounts that should be there.
 
----
+**Duplicate identities** — a correlation rule issue, usually traceable to an identifier that isn't as unique as it was assumed to be.
 
-### 🔹 Step 4: Data Storage
-- Data stored in IdentityNow
-- Accounts exist independently before correlation
+**Stale data** — incremental sync that isn't actually configured, so the platform's view of the source just slowly drifts out of date.
 
----
+## Interview answer
 
-### 🔹 Step 5: Identity Correlation
-- Accounts linked to identities via:
-  - Email
-  - Employee ID
-
----
-
-### 🔹 Step 6: Identity Profile Assignment
-- Identity profiles define:
-  - Attribute mapping
-  - Lifecycle state
-
----
-
-## 🔄 Aggregation Types
-
-### 🟢 Full Aggregation
-- Pulls all data
-- Used during onboarding
-
-### 🔄 Incremental Aggregation
-- Pulls only changes
-- Used for daily sync
-
----
-
-## ⚠️ Common Issues & Troubleshooting
-
-### ❌ Missing Accounts
-- Aggregation not executed
-- Filter misconfigured
-
----
-
-### ❌ Duplicate Identities
-- Correlation rule issue
-
----
-
-### ❌ Stale Data
-- Incremental sync not configured
-
----
-
-## 🎤 Interview Talking Points
-
-“Aggregation in IdentityNow pulls accounts and entitlements from sources, then correlates them to identities using identity profiles. This enables centralized governance of access across systems.”
-
----
-
-## 🚀 Key Takeaways
-
-- Aggregation is the **data foundation**
-- Correlation is critical
-- Identity profiles drive identity creation
-- Supports real-time governance
+"Aggregation in IdentityNow pulls accounts and entitlements from each source and correlates them back to identities through identity profiles. That correlation step is really what turns scattered source data into something governance can actually act on — without it, you just have a pile of disconnected accounts."
