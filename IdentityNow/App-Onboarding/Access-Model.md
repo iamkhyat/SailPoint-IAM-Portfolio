@@ -1,93 +1,35 @@
-# 🔐 IdentityNow – Access Model
+# IdentityNow – Access Model
 
-## 🎯 Objective
-Explain how IdentityNow models and manages access using Access Profiles and Entitlements.
+## The scenario
 
----
+Users need access spread across finance tools, HR systems, and CRM, and that access has to be both understandable to a business reviewer and governable through certifications — not just a list of raw permission codes nobody outside IT can interpret.
 
-## 🏢 Business Scenario
-Users require access across multiple applications:
-- Finance tools
-- HR systems
-- CRM
+## Approach
 
-Access must be:
-- Understandable
-- Governable
+IdentityNow steps away from deep RBAC hierarchies and instead groups entitlements into access profiles. I'd describe it simply as: an access profile is a grouped, business-friendly bundle of entitlements rather than a deep role tree.
 
----
+## Concepts
 
-## 🧠 IAM Design Approach
+Entitlements, access profiles, identity profiles, lifecycle states.
 
-IdentityNow replaces complex RBAC with:
+## Step by step
 
-👉 **Access Profiles = Grouped Entitlements**
+**Entitlement discovery** — pulled in via aggregation from each source, things like AD groups or Salesforce roles.
 
----
+**Access profile creation** — related entitlements get grouped together and given a name a non-technical reviewer would actually recognize.
 
-## 🔑 Key SailPoint Concepts Used
+**Assignment** — profiles get assigned to identities either manually (for exceptions) or through rules (for anything standard).
 
-- Entitlements
-- Access Profiles
-- Identity Profiles
-- Lifecycle States
+**Provisioning** — assigning an access profile is what actually triggers the provisioning action on the target system.
 
----
+## The flow in short
 
-## ⚙️ Step-by-Step Flow
+Entitlements get grouped into access profiles, those profiles get assigned to identities, and that assignment drives provisioning.
 
-### 🔹 Step 1: Entitlement Discovery
-- Aggregated from source
-- Examples:
-  - AD Groups
-  - Salesforce Roles
+## What goes wrong
 
----
+Overlapping profiles that grant the same access two different ways, poor grouping that doesn't reflect how access is actually used, and a lack of naming standards that leaves reviewers guessing what a given profile actually does.
 
-### 🔹 Step 2: Access Profile Creation
-- Group related entitlements
-- Define business-friendly name
+## Interview answer
 
----
-
-### 🔹 Step 3: Assignment
-- Assigned to identities manually or via rules
-
----
-
-### 🔹 Step 4: Provisioning
-- Access Profile triggers provisioning actions
-
----
-
-## 🔄 Access Flow
-
-Entitlements  
-↓  
-Access Profiles  
-↓  
-Assigned to Identity  
-↓  
-Provisioning  
-
----
-
-## ⚠️ Common Issues
-
-- Overlapping profiles  
-- Poor grouping  
-- Lack of naming standards  
-
----
-
-## 🎤 Interview Talking Points
-
-“IdentityNow uses Access Profiles instead of roles. These group entitlements into business-friendly units that can be assigned to users and provisioned automatically.”
-
----
-
-## 🚀 Key Takeaways
-
-- Simplifies RBAC  
-- Business-friendly access  
-- Easier governance  
+"IdentityNow uses access profiles instead of traditional roles — grouping entitlements into business-friendly units that can be assigned and provisioned without the overhead of a deep role hierarchy. It's a simpler model, which is exactly the point in a SaaS-heavy environment where you want governance to stay manageable as the number of applications grows."
