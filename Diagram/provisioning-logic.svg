@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Helvetica, Arial, sans-serif">
+  <style>
+    .box { fill:#ffffff; stroke:#6b46c1; stroke-width:2; rx:10; }
+    .box2 { fill:#faf5ff; stroke:#6b46c1; stroke-width:2; rx:10; }
+    .decision { fill:#fffaf0; stroke:#c05621; stroke-width:2; rx:10; }
+    .label { font-size:13.5px; fill:#1a202c; text-anchor:middle; font-weight:bold; }
+    .small { font-size:11px; fill:#4a5568; text-anchor:middle; }
+    .arrow { stroke:#4a5568; stroke-width:2; fill:none; marker-end:url(#ah2); }
+    .title { font-size:20px; font-weight:bold; fill:#1a202c; text-anchor:middle; }
+  </style>
+  <defs>
+    <marker id="ah2" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="30" class="title">Provisioning Logic — From Identity Change to Access Action</text>
+
+  <!-- Step 1 -->
+  <rect x="370" y="55" width="260" height="55" class="box2"/>
+  <text x="500" y="78" class="label">1. Identity Evaluation</text>
+  <text x="500" y="95" class="small">department, title, status checked</text>
+  <path d="M500 110 V135" class="arrow"/>
+
+  <!-- Step 2 -->
+  <rect x="370" y="135" width="260" height="55" class="box2"/>
+  <text x="500" y="158" class="label">2. Role Assignment Change</text>
+  <text x="500" y="175" class="small">assign / update / remove role</text>
+  <path d="M500 190 V215" class="arrow"/>
+
+  <!-- Step 3 -->
+  <rect x="370" y="215" width="260" height="55" class="box2"/>
+  <text x="500" y="238" class="label">3. Entitlement Calculation</text>
+  <text x="500" y="255" class="small">delta: what to add / remove</text>
+  <path d="M500 270 V295" class="arrow"/>
+
+  <!-- Step 4 -->
+  <rect x="350" y="295" width="300" height="55" class="box2"/>
+  <text x="500" y="318" class="label">4. Provisioning Plan Generated</text>
+  <text x="500" y="335" class="small">target app + operation + entitlements</text>
+  <path d="M500 350 V375" class="arrow"/>
+
+  <!-- Step 5: decision -->
+  <polygon points="500,375 610,420 500,465 390,420" class="decision"/>
+  <text x="500" y="415" class="label" font-size="12.5">5. Approval</text>
+  <text x="500" y="430" class="label" font-size="12.5">Required?</text>
+
+  <!-- Branch: yes -->
+  <path d="M610 420 H720" class="arrow"/>
+  <text x="665" y="412" class="small" font-weight="bold">yes</text>
+  <rect x="720" y="392" width="220" height="55" class="decision"/>
+  <text x="830" y="415" class="label">Approval Workflow</text>
+  <text x="830" y="432" class="small">manager / app owner sign-off</text>
+  <path d="M830 447 V500 H500 V500" class="arrow"/>
+
+  <!-- Branch: no -->
+  <path d="M500 465 V500" class="arrow"/>
+  <text x="475" y="485" class="small" font-weight="bold">no</text>
+
+  <!-- Step 6 -->
+  <rect x="350" y="500" width="300" height="60" class="box" stroke="#2f855a" fill="#e6fffa"/>
+  <text x="500" y="525" class="label" fill="#22543d">6. Provisioning Execution</text>
+  <text x="500" y="542" class="small">connector creates/modifies/disables account</text>
+
+  <!-- Side note: leaver risk -->
+  <rect x="700" y="500" width="240" height="80" fill="#fff5f5" stroke="#fc8181" stroke-width="1.5" rx="10"/>
+  <text x="820" y="520" class="small" font-weight="bold" fill="#742a2a">Watch for:</text>
+  <text x="820" y="538" class="small" font-size="10.5">Disable step not configured on an</text>
+  <text x="820" y="552" class="small" font-size="10.5">application → leaver access never</text>
+  <text x="820" y="566" class="small" font-size="10.5">actually gets removed there.</text>
+  <path d="M650 530 H700" class="arrow"/>
+</svg>
