@@ -1,52 +1,32 @@
-# 📊 Certification Campaign Setup
+# Certification Campaign Setup
 
-## 🎯 Objective
-Explain how certification campaigns are created in IdentityNow.
+## The scenario
 
----
+Organizations need to review access periodically — not as a one-off event, but as a recurring control that compliance frameworks expect to see evidence of.
 
-## 🏢 Business Scenario
-Organizations must review access periodically.
+## Approach
 
----
+Define the scope clearly, assign reviewers who actually have the context to make a real decision, and schedule campaigns on a sensible cadence rather than letting them pile up reactively right before an audit.
 
-## 🧠 IAM Design Approach
+## Concepts
 
-- Define scope  
-- Assign reviewers  
-- Schedule campaigns  
+Campaigns, reviewers.
 
----
+## Steps
 
-## 🔑 Key SailPoint Concepts Used
+1. Create the campaign.
+2. Define its scope.
+3. Assign reviewers.
+4. Launch it.
 
-- Campaigns
-- Reviewers
+## What goes wrong
 
----
+Scoping it wrong — either too broad or missing the access that actually matters — and reviewer overload, which tends to produce rubber-stamp approvals rather than genuine review.
 
-## ⚙️ Step-by-Step Flow
+## Interview talking points
 
-1. Create campaign  
-2. Define scope  
-3. Assign reviewers  
-4. Launch  
+Risk-based reviews, and why scoping matters more than people initially assume when designing a campaign.
 
----
+## Takeaway
 
-## ⚠️ Common Issues
-
-- Wrong scope  
-- Reviewer overload  
-
----
-
-## 🎤 Interview Talking Points
-
-- Risk-based reviews  
-
----
-
-## 🚀 Key Takeaways
-
-- Core to compliance  
+Certification campaigns are core to compliance, but only if they're actually designed to produce meaningful decisions rather than just generating activity that looks good on a report.
