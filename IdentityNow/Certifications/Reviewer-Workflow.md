@@ -1,39 +1,28 @@
-# 👥 Reviewer Workflow
+# Reviewer Workflow
 
-## 🎯 Objective
-Explain how reviewers perform access reviews.
+## What this covers
 
----
+How reviewers actually go through an access review in IdentityNow, and what tends to slow them down or cause bad decisions.
 
-## 🧠 IAM Design Approach
+## Approach
 
-- Assign ownership  
-- Enable decision-making  
+Assign clear ownership for each item, and make sure the reviewer can actually make a decision rather than just clicking through unfamiliar entries.
 
----
+## Steps from the reviewer's side
 
-## ⚙️ Step-by-Step Flow
+1. Notification goes out.
+2. Reviewer logs in.
+3. Reviewer goes through the assigned access.
+4. Reviewer approves or revokes.
 
-1. Notification sent  
-2. Reviewer logs in  
-3. Reviews access  
-4. Approves/revokes  
+## What goes wrong
 
----
+Delays from reviewers not getting to it promptly, and reviewers lacking the context to actually understand what they're being asked to approve.
 
-## ⚠️ Common Issues
+## Interview talking points
 
-- Delays  
-- Lack of context  
+Reviewer experience matters more than people give it credit for — a confusing UI or unclear access description produces bad decisions just as easily as a careless reviewer does.
 
----
+## Takeaway
 
-## 🎤 Interview Talking Points
-
-- Reviewer UX  
-
----
-
-## 🚀 Key Takeaways
-
-- Human validation layer  
+The reviewer step is really the human validation layer in the whole certification process. If that layer isn't functioning well, the rest of the automation around it doesn't matter much.
