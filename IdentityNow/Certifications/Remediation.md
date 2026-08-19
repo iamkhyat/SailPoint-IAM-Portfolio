@@ -1,38 +1,27 @@
-# 🔧 Remediation
+# Remediation
 
-## 🎯 Objective
-Explain how revoked access is removed.
+## What this covers
 
----
+What actually happens after a reviewer decides to revoke access in an IdentityNow certification.
 
-## 🧠 IAM Design Approach
+## Approach
 
-- Automate removal  
-- Ensure compliance  
+Automate the removal rather than relying on a manual follow-up step, and make sure the whole thing is auditable enough to satisfy compliance.
 
----
+## Steps
 
-## ⚙️ Step-by-Step Flow
+1. A revoke decision gets made.
+2. That decision triggers provisioning.
+3. Access gets removed on the target system.
 
-1. Revoke decision  
-2. Trigger provisioning  
-3. Remove access  
+## What goes wrong
 
----
+Provisioning failures that prevent the removal from actually completing, and delays between the decision and the action actually executing.
 
-## ⚠️ Common Issues
+## Interview talking points
 
-- Provisioning failure  
-- Delays  
+Why automated enforcement matters here — a revoke decision that doesn't reliably turn into removed access isn't really governance, it's just a recorded opinion.
 
----
+## Takeaway
 
-## 🎤 Interview Talking Points
-
-- Automated enforcement  
-
----
-
-## 🚀 Key Takeaways
-
-- Critical for security  
+This step is critical for security. Certifications without reliable remediation just produce a paper trail of intentions, not actual risk reduction.
