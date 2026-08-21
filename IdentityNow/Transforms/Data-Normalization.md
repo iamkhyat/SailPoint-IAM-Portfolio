@@ -1,52 +1,31 @@
-# 🧹 Data Normalization
+# Data Normalization
 
-## 🎯 Objective
-Ensure consistent identity data across sources.
+## The scenario
 
----
+Different systems store the same conceptual data in different ways — department names that don't match between HR and AD, status codes that mean different things in different feeds. None of it lines up cleanly out of the box.
 
-## 🏢 Business Scenario
-Different systems store:
-- Names differently
-- Departments inconsistently
+## Approach
 
----
+Use transforms to normalize values into a consistent form before identity data depends on them downstream.
 
-## 🧠 IAM Design Approach
+## Concepts
 
-- Normalize using transforms
-- Standardize values
+Transforms, identity profiles.
 
----
+## Steps
 
-## 🔑 Key SailPoint Concepts Used
+1. Identify where the inconsistencies actually are.
+2. Apply transform rules to fix them.
+3. Confirm the data's actually standardized after the fact, not just assumed to be.
 
-- Transforms
-- Identity Profiles
+## What goes wrong
 
----
+Inconsistent formats slipping through despite a transform being in place, and missing mappings for values nobody anticipated showing up in the source data.
 
-## ⚙️ Step-by-Step Flow
+## Interview talking points
 
-1. Identify inconsistencies  
-2. Apply transform rules  
-3. Standardize data  
+Why data quality is foundational to everything else IAM does — it's easy to treat this as boring plumbing work, but it's usually where the real problems originate.
 
----
+## Takeaway
 
-## ⚠️ Common Issues
-
-- Inconsistent formats  
-- Missing mapping  
-
----
-
-## 🎤 Interview Talking Points
-
-- Data quality importance  
-
----
-
-## 🚀 Key Takeaways
-
-- Clean data = accurate IAM  
+Clean data is what makes accurate IAM possible. Skipping normalization doesn't save time — it just defers the problem to a much harder debugging session later.
