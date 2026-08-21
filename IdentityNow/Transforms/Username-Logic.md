@@ -1,54 +1,31 @@
-# 🧾 Username Logic (Transforms)
+# Username Logic (Transforms)
 
-## 🎯 Objective
-Explain how IdentityNow generates unique usernames using transforms.
+## The scenario
 
----
+New users need a username that's both consistent in format and guaranteed unique — and source systems don't reliably hand you one ready-made.
 
-## 🏢 Business Scenario
-New users need:
-- Unique usernames
-- Consistent format
+## Approach
 
----
+Combine identity attributes through transform rules, and build in an explicit uniqueness check rather than assuming a naming pattern will never collide.
 
-## 🧠 IAM Design Approach
+## Concepts
 
-- Use transform rules
-- Combine attributes
-- Ensure uniqueness
+Transforms, identity attributes.
 
----
+## Steps
 
-## 🔑 Key SailPoint Concepts Used
+1. Pull the attributes needed — typically first name and last name.
+2. Apply the naming logic (something like `firstName.lastName`, lowercased).
+3. Check uniqueness and append a number or similar suffix if a collision turns up.
 
-- Transforms
-- Identity Attributes
+## What goes wrong
 
----
+Duplicate usernames when the uniqueness check isn't actually wired in, and missing attributes when a source doesn't reliably populate first or last name.
 
-## ⚙️ Step-by-Step Flow
+## Interview talking points
 
-1. Fetch attributes (firstName, lastName)  
-2. Apply logic  
-3. Check uniqueness  
+How transforms get used practically for something as simple-sounding as a username, and why uniqueness has to be handled explicitly rather than assumed.
 
----
+## Takeaway
 
-## ⚠️ Common Issues
-
-- Duplicate usernames  
-- Missing attributes  
-
----
-
-## 🎤 Interview Talking Points
-
-- Transform usage  
-- Username uniqueness  
-
----
-
-## 🚀 Key Takeaways
-
-- Automation reduces manual errors  
+This is a small piece of the platform, but it's a good example of how automation removes a class of manual error — nobody has to remember to check whether "jsmith" already exists before creating the account.
