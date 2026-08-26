@@ -21,5 +21,3 @@ The engineer and professional certifications validate the hands-on IIQ work — 
 SailPoint certifications are verifiable through the [SailPoint community portal](https://community.sailpoint.com). Happy to share badge links directly on request.
 
 ---
-
-*Last updated: 2026*
