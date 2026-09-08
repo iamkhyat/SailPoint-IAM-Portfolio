@@ -10,7 +10,7 @@ A quick-reference overview of where I sit on the tools and concepts that come up
 
 | Skill | Proficiency | Notes |
 |---|---|---|
-| SailPoint IdentityIQ (7.x / 8.x) | Expert | Primary platform for 6+ years |
+| SailPoint IdentityIQ (7.x / 8.x) | Expert | Primary platform for 4+ years |
 | SailPoint IdentityNow / ISC | Proficient | Deep lab work, closing production gap |
 | IIQ Application Onboarding | Expert | LDAP, JDBC, REST, flat-file connectors |
 | IDN Source & Connector Management | Proficient | SaaS + Virtual Appliance |
