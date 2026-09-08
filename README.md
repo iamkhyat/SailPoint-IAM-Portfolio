@@ -1,6 +1,6 @@
 # SailPoint IAM Portfolio
 
-Hi, I'm Binaya Thapa — a SailPoint engineer with 6+ years working in IdentityIQ and, more recently, IdentityNow. I put this repo together during a stretch between roles, mainly to keep my hands on the tools and to have something concrete to point to when people ask "what have you actually built?"
+Hi, I'm Binaya Thapa — a SailPoint engineer with 4+ years working in IdentityIQ and, more recently, IdentityNow. I put this repo together during a stretch between roles, mainly to keep my hands on the tools and to have something concrete to point to when people ask "what have you actually built?"
 
 Most of what's here isn't a screenshot of a single client project (I can't share that, obviously — NDAs), but a set of lab builds and write-ups that mirror the exact problems I've solved on the job: onboarding a new application, automating joiner-mover-leaver, running certification campaigns, and chasing down the kind of provisioning failures that show up at 2 AM during a production aggregation run.
 
